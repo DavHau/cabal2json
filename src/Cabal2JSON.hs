@@ -15,18 +15,27 @@ import Data.Aeson (FromJSON, ToJSON)
 import qualified Data.HashMap.Strict as HM
 import Data.Hashable
 import Distribution.PackageDescription.Parsec as Cabal
+import Distribution.Pretty as Pretty
 import Distribution.Types.Benchmark as Cabal
+import Distribution.Types.BenchmarkInterface as Cabal
+import Distribution.Types.BenchmarkType as Cabal
+import Distribution.Types.BuildInfo as Cabal
 import Distribution.Types.CondTree as Cabal
 import Distribution.Types.ConfVar as Cabal
 import Distribution.Types.Dependency as Cabal
 import Distribution.Types.Executable as Cabal
+import Distribution.Types.ExecutableScope as Cabal
 import Distribution.Types.Flag as Cabal
 import Distribution.Types.ForeignLib as Cabal
+import Distribution.Types.ForeignLibOption as Cabal
+import Distribution.Types.ForeignLibType as Cabal
 import Distribution.Types.GenericPackageDescription as Cabal
 import Distribution.Types.Library as Cabal
 import Distribution.Types.PackageDescription as Cabal
 import Distribution.Types.TestSuite as Cabal
+import Distribution.Types.TestSuiteInterface as Cabal
 import Distribution.Types.UnqualComponentName as Cabal
+import Distribution.Types.Version as Cabal
 import Distribution.Verbosity as Cabal
 import System.Environment
 import Text.Show.Pretty
@@ -56,6 +65,9 @@ deriving via (Autodocodec GenericPackageDescription) instance (ToJSON GenericPac
 
 unqualComponentNameCodec :: HasCodec b => JSONCodec [(UnqualComponentName, b)]
 unqualComponentNameCodec = mapInListForCodec mkUnqualComponentName unUnqualComponentName
+
+instance HasCodec UnqualComponentName where
+  codec = dimapCodec mkUnqualComponentName unUnqualComponentName codec
 
 mapInListForCodec ::
   HasCodec b =>
@@ -96,13 +108,65 @@ instance HasCodec Library where
   codec = undefined
 
 instance HasCodec ForeignLib where
+  codec =
+    object "ForeignLib" $
+      ForeignLib
+        <$> requiredField' "name" .= foreignLibName
+        <*> requiredField' "type" .= foreignLibType
+        <*> requiredField' "options" .= foreignLibOptions
+        <*> requiredField' "build-info" .= foreignLibBuildInfo
+        <*> requiredField' "version-info" .= foreignLibVersionInfo
+        <*> requiredField' "linux-version" .= foreignLibVersionLinux
+        <*> requiredField' "mod-def-files" .= foreignLibModDefFile
+
+instance HasCodec ForeignLibType where
+  codec = undefined
+
+instance HasCodec ForeignLibOption where
+  codec = undefined
+
+instance HasCodec LibVersionInfo where
+  codec = undefined
+
+instance HasCodec Version where
   codec = undefined
 
 instance HasCodec Executable where
+  codec =
+    object "Executable" $
+      Executable
+        <$> requiredField' "name" .= exeName
+        <*> requiredField' "module-path" .= modulePath
+        <*> requiredField' "scope" .= exeScope
+        <*> requiredField' "build-info" .= buildInfo
+
+instance HasCodec ExecutableScope where
   codec = undefined
 
 instance HasCodec TestSuite where
+  codec =
+    object "TestSuite" $
+      TestSuite
+        <$> requiredField' "name" .= testName
+        <*> requiredField' "interface" .= testInterface
+        <*> requiredField' "build-info" .= testBuildInfo
+
+instance HasCodec TestSuiteInterface where
   codec = undefined
 
 instance HasCodec Benchmark where
+  codec =
+    object "Benchmark" $
+      Benchmark
+        <$> requiredField' "name" .= benchmarkName
+        <*> requiredField' "interface" .= benchmarkInterface
+        <*> requiredField' "build-info" .= benchmarkBuildInfo
+
+instance HasCodec BenchmarkType where
+  codec = dimapCodec undefined prettyShow codec
+
+instance HasCodec BenchmarkInterface where
+  codec = undefined
+
+instance HasCodec BuildInfo where
   codec = undefined
