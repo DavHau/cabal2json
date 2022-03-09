@@ -3,4 +3,7 @@ packages:
 - .
 extra-deps:
 - autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
-
+- autodocodec-schema-0.1.0.0@sha256:e62052ca88d6bae51af058ad120b5c5d0510145f603dbb70616865a8de1ce238,1089
+- autodocodec-yaml-0.1.0.0@sha256:c9c87b0dcc5f192bec7b722013d6652895b6b1d6a9d4b342958f20be66a31d47,1191
+- sydtest-0.8.0.0
+- sydtest-aeson-0.0.0.0

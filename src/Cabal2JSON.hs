@@ -1,5 +1,7 @@
+{-# LANGUAGE DerivingVia #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Cabal2JSON
@@ -9,6 +11,7 @@ where
 
 import Autodocodec
 import Control.Arrow (first)
+import Data.Aeson (FromJSON, ToJSON)
 import qualified Data.HashMap.Strict as HM
 import Data.Hashable
 import Distribution.PackageDescription.Parsec as Cabal
@@ -46,6 +49,10 @@ instance HasCodec GenericPackageDescription where
         <*> optionalFieldWithOmittedDefaultWith' "executables" unqualComponentNameCodec [] .= condExecutables
         <*> optionalFieldWithOmittedDefaultWith' "test-suites" unqualComponentNameCodec [] .= condTestSuites
         <*> optionalFieldWithOmittedDefaultWith' "benchmarks" unqualComponentNameCodec [] .= condBenchmarks
+
+deriving via (Autodocodec GenericPackageDescription) instance (FromJSON GenericPackageDescription)
+
+deriving via (Autodocodec GenericPackageDescription) instance (ToJSON GenericPackageDescription)
 
 unqualComponentNameCodec :: HasCodec b => JSONCodec [(UnqualComponentName, b)]
 unqualComponentNameCodec = mapInListForCodec mkUnqualComponentName unUnqualComponentName

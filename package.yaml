@@ -31,11 +31,16 @@ executables:
 
 tests:
   cabal2json-test:
-    main:                Spec.hs
-    source-dirs:         test
+    main: Spec.hs
+    source-dirs: test
+    build-tools: sydtest-discover
     ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
     - cabal2json
+    - sydtest
+    - sydtest-aeson
+    - Cabal
+
