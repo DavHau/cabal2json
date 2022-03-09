@@ -1,3 +1,6 @@
 resolver: lts-18.16
 packages:
 - .
+extra-deps:
+- autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
+

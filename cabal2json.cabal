@@ -27,7 +27,11 @@ library
   build-depends:
       Cabal
     , aeson
+    , autodocodec
     , base >=4.7 && <5
+    , hashable
+    , pretty-show
+    , unordered-containers
   default-language: Haskell2010
 
 executable cabal2json

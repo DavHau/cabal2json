@@ -13,6 +13,10 @@ library:
   dependencies:
   - Cabal
   - aeson
+  - autodocodec
+  - hashable
+  - pretty-show
+  - unordered-containers
 
 executables:
   cabal2json:

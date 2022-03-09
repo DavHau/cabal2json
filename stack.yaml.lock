@@ -3,7 +3,14 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
+    pantry-tree:
+      size: 688
+      sha256: eda5beece10b7f90f40bc9f8b43e50fbb9e4cacd2b4aa51b85c2c530a32b0bab
+  original:
+    hackage: autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
 snapshots:
 - completed:
     size: 586286
