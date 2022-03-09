@@ -78,7 +78,16 @@ instance HasCodec PackageDescription where
   codec = undefined
 
 instance HasCodec Flag where
-  codec = undefined
+  codec =
+    object "Flag" $
+      MkFlag
+        <$> requiredField' "name" .= flagName
+        <*> requiredField' "description" .= flagDescription
+        <*> requiredField' "default" .= flagDefault
+        <*> requiredField' "manual" .= flagManual
+
+instance HasCodec FlagName where
+  codec = dimapCodec mkFlagName unFlagName codec
 
 instance HasCodec a => HasCodec (CondTree ConfVar [Dependency] a) where
   codec = undefined

@@ -59,6 +59,7 @@ test-suite cabal2json-test
       sydtest-discover:sydtest-discover
   build-depends:
       Cabal
+    , autodocodec
     , autodocodec-yaml
     , base >=4.7 && <5
     , cabal2json

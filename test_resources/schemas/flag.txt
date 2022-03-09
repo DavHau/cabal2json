@@ -1,0 +1,9 @@
+# Flag
+[37mname[m: # [31mrequired[m
+  [33m<string>[m
+[37mdescription[m: # [31mrequired[m
+  [33m<string>[m
+[37mdefault[m: # [31mrequired[m
+  [33m<boolean>[m
+[37mmanual[m: # [31mrequired[m
+  [33m<boolean>[m
