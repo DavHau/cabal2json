@@ -39,8 +39,8 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    - Cabal
+    - autodocodec-yaml
     - cabal2json
     - sydtest
     - sydtest-aeson
-    - Cabal
-
