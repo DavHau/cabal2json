@@ -5,18 +5,13 @@ cabal-version: 1.12
 -- see: https://github.com/sol/hpack
 
 name:           cabal2json
-version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/NorfairKing/cabal2json#readme>
+version:        0.0.0.0
 homepage:       https://github.com/NorfairKing/cabal2json#readme
 bug-reports:    https://github.com/NorfairKing/cabal2json/issues
 author:         Tom Sydney Kerckhove
 maintainer:     syd@cs-syd.eu
 copyright:      Copyright (c) 2022 Tom Sydney Kerckhove
-license:        BSD3
 build-type:     Simple
-extra-source-files:
-    README.md
-    ChangeLog.md
 
 source-repository head
   type: git
@@ -24,16 +19,18 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Cabal2JSON
   other-modules:
       Paths_cabal2json
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      Cabal
+    , aeson
+    , base >=4.7 && <5
   default-language: Haskell2010
 
-executable cabal2json-exe
+executable cabal2json
   main-is: Main.hs
   other-modules:
       Paths_cabal2json

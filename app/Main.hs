@@ -1,6 +1,6 @@
 module Main where
 
-import Lib
+import Cabal2JSON
 
 main :: IO ()
-main = someFunc
+main = cabal2JSON
