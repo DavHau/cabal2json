@@ -7,6 +7,7 @@ module Cabal2JSONSpec (spec) where
 import Autodocodec
 import Autodocodec.Yaml
 import Cabal2JSON ()
+import Distribution.ModuleName as Cabal
 import Distribution.PackageDescription.Parsec as Cabal
 import Distribution.Types.Benchmark as Cabal
 import Distribution.Types.BenchmarkInterface as Cabal
@@ -19,6 +20,10 @@ import Distribution.Types.ForeignLib as Cabal
 import Distribution.Types.ForeignLibOption as Cabal
 import Distribution.Types.ForeignLibType as Cabal
 import Distribution.Types.GenericPackageDescription as Cabal
+import Distribution.Types.Library as Cabal
+import Distribution.Types.LibraryName as Cabal
+import Distribution.Types.LibraryVisibility as Cabal
+import Distribution.Types.ModuleReexport as Cabal
 import Distribution.Types.PackageDescription as Cabal
 import Distribution.Types.TestSuite as Cabal
 import Distribution.Types.TestSuiteInterface as Cabal
@@ -36,6 +41,11 @@ spec = do
 
   schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
   schemaSpec @Cabal.BuildInfo "build-info"
+  schemaSpec @Cabal.ModuleName "module-name"
+  schemaSpec @Cabal.ModuleReexport "module-reexport"
+  schemaSpec @Cabal.LibraryName "library-name"
+  schemaSpec @Cabal.LibraryVisibility "library-visibility"
+  schemaSpec @Cabal.Library "library"
   schemaSpec @Cabal.ForeignLibType "foreign-lib-type"
   schemaSpec @Cabal.ForeignLibOption "foreign-lib-option"
   schemaSpec @Cabal.ForeignLib "foreign-lib"
