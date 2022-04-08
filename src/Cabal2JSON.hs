@@ -30,17 +30,24 @@ import Distribution.Types.ConfVar as Cabal
 import Distribution.Types.Dependency as Cabal
 import Distribution.Types.Executable as Cabal
 import Distribution.Types.ExecutableScope as Cabal
+import Distribution.Types.ExeDependency as Cabal
 import Distribution.Types.Flag as Cabal
 import Distribution.Types.ForeignLib as Cabal
 import Distribution.Types.ForeignLibOption as Cabal
 import Distribution.Types.ForeignLibType as Cabal
 import Distribution.Types.GenericPackageDescription as Cabal
+import Distribution.Types.IncludeRenaming as Cabal
+import Distribution.Types.LegacyExeDependency as Cabal
 import Distribution.Types.Library as Cabal
 import Distribution.Types.LibraryName as Cabal
 import Distribution.Types.LibraryVisibility as Cabal
+import Distribution.Types.Mixin as Cabal
 import Distribution.Types.ModuleReexport as Cabal
+import Distribution.Types.ModuleRenaming as Cabal
 import Distribution.Types.PackageDescription as Cabal
 import Distribution.Types.PackageId as Cabal
+import Distribution.Types.PackageName as Cabal
+import Distribution.Types.PkgconfigDependency as Cabal
 import Distribution.Types.SetupBuildInfo as Cabal
 import Distribution.Types.SourceRepo as Cabal
 import Distribution.Types.TestSuite as Cabal
@@ -50,6 +57,7 @@ import Distribution.Types.Version as Cabal
 import Distribution.Types.VersionRange as Cabal
 import Distribution.Utils.ShortText as Cabal
 import Distribution.Verbosity as Cabal
+import Language.Haskell.Extension
 import System.Environment
 import Text.Show.Pretty (pPrint)
 
@@ -121,7 +129,7 @@ instance HasCodec PackageDescription where
         <*> requiredField' "category" .= category
         <*> requiredFieldWith' "custom-fields" undefined .= customFieldsPD
         <*> requiredField' "build-type-raw" .= buildTypeRaw
-        <*> requiredField' "setup-build-info" .= setupBuildInfo
+        <*> requiredField' "custom-setup" .= setupBuildInfo
         <*> requiredField' "library" .= library
         <*> requiredField' "sublibraries" .= subLibraries
         <*> requiredField' "executables" .= executables
@@ -135,31 +143,79 @@ instance HasCodec PackageDescription where
         <*> requiredField' "extra-doc-files" .= extraDocFiles
 
 instance HasCodec (CompilerFlavor, VersionRange) where
+  -- TODO: ?
   codec = undefined
 
+instance HasCodec (PerCompilerFlavor [String]) where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec (String, String) where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec PackageName where
+  codec = dimapCodec mkPackageName unPackageName codec
+
 instance HasCodec PackageIdentifier where
+  codec =
+    object "PackgeIdentifier" $
+      PackageIdentifier
+        <$> requiredField' "name" .= pkgName
+        <*> requiredField' "version" .= pkgVersion
+
+instance HasCodec RepoKind where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec RepoType where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec Dependency where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec SourceRepo where
-  codec = undefined
+  codec =
+    object "SourceRepo" $
+      SourceRepo
+       <$> requiredField' "kind" .= repoKind
+       <*> requiredField' "type" .= repoType
+       <*> requiredField' "location" .= repoLocation
+       <*> requiredField' "module" .= repoModule
+       <*> requiredField' "branch" .= repoBranch
+       <*> requiredField' "tag" .= repoTag
+       <*> requiredField' "subdir" .= repoSubdir
 
 instance HasCodec VersionRange where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec ShortText where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec Cabal.License where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec SPDX.License where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec BuildType where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec SetupBuildInfo where
-  codec = undefined
+  codec =
+    object "SetupBuildInfo" $
+      SetupBuildInfo
+        <$> requiredField' "setup-depends" .= setupDepends
+        -- TODO: not needed
+        <*> requiredField' "__defaultSetupDepends" .= defaultSetupDepends
+
 
 instance HasCodec Flag where
   codec =
@@ -174,6 +230,7 @@ instance HasCodec FlagName where
   codec = dimapCodec mkFlagName unFlagName codec
 
 instance HasCodec a => HasCodec (CondTree ConfVar [Dependency] a) where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec Library where
@@ -189,15 +246,23 @@ instance HasCodec Library where
         <*> requiredField' "build-info" .= libBuildInfo
 
 instance HasCodec LibraryName where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec ModuleName where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec ModuleReexport where
-  codec = undefined
+  codec =
+    object "ModuleReexport" $
+      ModuleReexport
+        <$> requiredField' "moduleReexportOriginalPackage" .= moduleReexportOriginalPackage
+        <*> requiredField' "moduleReexportOriginalName" .= moduleReexportOriginalName
+        <*> requiredField' "moduleReexportName" .= moduleReexportName
 
 instance HasCodec LibraryVisibility where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec ForeignLib where
@@ -213,15 +278,19 @@ instance HasCodec ForeignLib where
         <*> requiredField' "mod-def-files" .= foreignLibModDefFile
 
 instance HasCodec ForeignLibType where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec ForeignLibOption where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec LibVersionInfo where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec Version where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec Executable where
@@ -234,6 +303,7 @@ instance HasCodec Executable where
         <*> requiredField' "build-info" .= buildInfo
 
 instance HasCodec ExecutableScope where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec TestSuite where
@@ -245,6 +315,7 @@ instance HasCodec TestSuite where
         <*> requiredField' "build-info" .= testBuildInfo
 
 instance HasCodec TestSuiteInterface where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec Benchmark where
@@ -256,10 +327,95 @@ instance HasCodec Benchmark where
         <*> requiredField' "build-info" .= benchmarkBuildInfo
 
 instance HasCodec BenchmarkType where
+  -- TODO: ?
   codec = dimapCodec undefined prettyShow codec
 
 instance HasCodec BenchmarkInterface where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec ModuleRenaming where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec IncludeRenaming where
+  codec =
+    object "IncludeRenaming" $
+      IncludeRenaming
+        <$> requiredField' "includeProvidesRn" .= includeProvidesRn
+        <*> requiredField' "includeRequiresRn" .= includeRequiresRn
+
+instance HasCodec Mixin where
+  codec =
+    object "Mixin" $
+      Mixin
+        <$> requiredField' "package-name" .= mixinPackageName
+        <*> requiredField' "include-renaming" .= mixinIncludeRenaming
+
+instance HasCodec LegacyExeDependency where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec ExeDependency where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec PkgconfigDependency where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec Language where
+  -- TODO: ?
+  codec = undefined
+
+instance HasCodec Extension where
+  -- TODO: ?
   codec = undefined
 
 instance HasCodec BuildInfo where
-  codec = undefined
+  codec =
+    object "BuildInfo" $
+      BuildInfo
+        <$> requiredField' "buildable" .= buildable
+        <*> requiredField' "buildTools" .= buildTools
+        <*> requiredField' "buildToolDepends" .= buildToolDepends
+        <*> requiredField' "cppOptions" .= cppOptions
+        <*> requiredField' "asmOptions" .= asmOptions
+        <*> requiredField' "cmmOptions" .= cmmOptions
+        <*> requiredField' "ccOptions" .= ccOptions
+        <*> requiredField' "cxxOptions" .= cxxOptions
+        <*> requiredField' "ldOptions" .= ldOptions
+        <*> requiredField' "pkgconfigDepends" .= pkgconfigDepends
+        <*> requiredField' "frameworks" .= frameworks
+        <*> requiredField' "extraFrameworkDirs" .= extraFrameworkDirs
+        <*> requiredField' "asmSources" .= asmSources
+        <*> requiredField' "cmmSources" .= cmmSources
+        <*> requiredField' "cSources" .= cSources
+        <*> requiredField' "cxxSources" .= cxxSources
+        <*> requiredField' "jsSources" .= jsSources
+        <*> requiredField' "hsSourceDirs" .= hsSourceDirs
+        <*> requiredField' "otherModules" .= otherModules
+        <*> requiredField' "virtualModules" .= virtualModules
+        <*> requiredField' "autogenModules" .= autogenModules
+        <*> requiredField' "defaultLanguage" .= defaultLanguage
+        <*> requiredField' "otherLanguages" .= otherLanguages
+        <*> requiredField' "defaultExtensions" .= defaultExtensions
+        <*> requiredField' "otherExtensions" .= otherExtensions
+        <*> requiredField' "oldExtensions" .= oldExtensions
+        <*> requiredField' "extraLibs" .= extraLibs
+        <*> requiredField' "extraGHCiLibs" .= extraGHCiLibs
+        <*> requiredField' "extraBundledLibs" .= extraBundledLibs
+        <*> requiredField' "extraLibFlavours" .= extraLibFlavours
+        <*> requiredField' "extraDynLibFlavours" .= extraDynLibFlavours
+        <*> requiredField' "extraLibDirs" .= extraLibDirs
+        <*> requiredField' "includeDirs" .= includeDirs
+        <*> requiredField' "includes" .= includes
+        <*> requiredField' "autogenIncludes" .= autogenIncludes
+        <*> requiredField' "installIncludes" .= installIncludes
+        <*> requiredField' "options" .= options
+        <*> requiredField' "profOptions" .= profOptions
+        <*> requiredField' "sharedOptions" .= sharedOptions
+        <*> requiredField' "staticOptions" .= staticOptions
+        <*> requiredField' "customFieldsBI" .= customFieldsBI
+        <*> requiredField' "targetBuildDepends" .= targetBuildDepends
+        <*> requiredField' "mixins" .= mixins
