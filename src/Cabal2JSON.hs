@@ -303,8 +303,9 @@ instance HasCodec Executable where
         <*> requiredField' "build-info" .= buildInfo
 
 instance HasCodec ExecutableScope where
-  -- TODO: ?
-  codec = undefined
+  codec =
+    object "ExecutableScope" $
+        requiredField' "executable-scope" .= (\a -> a)
 
 instance HasCodec TestSuite where
   codec =
@@ -357,16 +358,26 @@ instance HasCodec LegacyExeDependency where
   codec = undefined
 
 instance HasCodec ExeDependency where
-  -- TODO: ?
-  codec = undefined
+  codec =
+    object "ExeDependency" $
+      ExeDependency
+        <$> requiredField' "package-name" .= (\(ExeDependency a b c) -> a)
+        <*> requiredField' "executable-component-name" .= (\(ExeDependency a b c) -> b)
+        <*> requiredField' "version-range" .= (\(ExeDependency a b c) -> c)
 
 instance HasCodec PkgconfigDependency where
   -- TODO: ?
   codec = undefined
 
 instance HasCodec Language where
-  -- TODO: ?
-  codec = undefined
+  codec =
+    object "Language" $
+      UnknownLanguage
+        <$> requiredField' "language" .=
+          (\ a -> case a of
+            Haskell98 -> "Haskell98"
+            Haskell2010 -> "Haskell2010"
+            (UnknownLanguage b) -> b)
 
 instance HasCodec Extension where
   -- TODO: ?
