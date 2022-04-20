@@ -17,6 +17,8 @@ library:
   - hashable
   - pretty-show
   - unordered-containers
+  - utf8-string
+  - pretty
 
 executables:
   cabal2json:

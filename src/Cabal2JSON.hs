@@ -3,6 +3,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE StandaloneDeriving #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedLists #-}
 
 module Cabal2JSON
   ( cabal2JSON,
@@ -60,12 +62,22 @@ import Distribution.Verbosity as Cabal
 import Language.Haskell.Extension
 import System.Environment
 import Text.Show.Pretty (pPrint)
+import Data.List.NonEmpty (fromList)
+import Distribution.Types.PkgconfigName (PkgconfigName, mkPkgconfigName, unPkgconfigName)
+import Distribution.Types.PkgconfigVersionRange
+import Data.Word (Word8)
+import Distribution.Types.PkgconfigVersion
+import Data.ByteString.UTF8 as BSU
+import Text.PrettyPrint
+import Distribution.Parsec (Parsec(parsec), CabalParsing (parsecHaskellString), eitherParsec)
+import Distribution.Compat.Lens (_1)
 
 cabal2JSON :: IO ()
 cabal2JSON = do
-  arg : _ <- getArgs
-  cabalFile <- Cabal.readGenericPackageDescription Cabal.deafening arg
-  pPrint cabalFile
+  arg <- getArgs
+  case arg of
+    [] -> error "Please provide path to cabal file as CLI argument"
+    arg -> Cabal.readGenericPackageDescription Cabal.deafening (head arg) >>= pPrint
 
 instance HasCodec GenericPackageDescription where
   codec =
@@ -147,12 +159,10 @@ instance HasCodec (CompilerFlavor, VersionRange) where
   codec = undefined
 
 instance HasCodec (PerCompilerFlavor [String]) where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec (uncurry PerCompilerFlavor) (\(PerCompilerFlavor a b) -> (a,b)) codec
 
-instance HasCodec (String, String) where
-  -- TODO: ?
-  codec = undefined
+instance (HasCodec a) => HasCodec (a, a) where
+  codec = dimapCodec (\(a:[b]) -> (a, b)) (\(a, b) -> [a, b]) codec
 
 instance HasCodec PackageName where
   codec = dimapCodec mkPackageName unPackageName codec
@@ -173,8 +183,11 @@ instance HasCodec RepoType where
   codec = undefined
 
 instance HasCodec Dependency where
-  -- TODO: ?
-  codec = undefined
+  codec = object "Dependency" $
+      Dependency
+        <$> requiredField' "package-name" .= (\(Dependency name _ _ ) -> name)
+        <*> requiredField' "version-range" .= (\(Dependency _ version _ ) -> version)
+        <*> requiredField' "library" .= (\(Dependency _ _ lib ) -> lib)
 
 instance HasCodec SourceRepo where
   codec =
@@ -189,8 +202,12 @@ instance HasCodec SourceRepo where
        <*> requiredField' "subdir" .= repoSubdir
 
 instance HasCodec VersionRange where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec f g codec
+    where
+      f = \s -> case eitherParsec s of
+        Left pe -> error "Invalid version string"
+        Right a -> a
+      g = prettyShow
 
 instance HasCodec ShortText where
   -- TODO: ?
@@ -246,12 +263,19 @@ instance HasCodec Library where
         <*> requiredField' "build-info" .= libBuildInfo
 
 instance HasCodec LibraryName where
-  -- TODO: ?
-  codec = undefined
+  codec = object "LibraryName" $ dimapCodec f g $
+      eitherCodec (pure LMainLibName) $
+        requiredField' "sub-lib-name"
+    where
+      f = \case
+        Left _ -> LMainLibName
+        Right s -> LSubLibName s
+      g = \case
+        LMainLibName -> Left ()
+        LSubLibName s -> Right s
 
 instance HasCodec ModuleName where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec fromComponents components codec
 
 instance HasCodec ModuleReexport where
   codec =
@@ -290,8 +314,7 @@ instance HasCodec LibVersionInfo where
   codec = undefined
 
 instance HasCodec Version where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec mkVersion versionNumbers codec
 
 instance HasCodec Executable where
   codec =
@@ -303,9 +326,7 @@ instance HasCodec Executable where
         <*> requiredField' "build-info" .= buildInfo
 
 instance HasCodec ExecutableScope where
-  codec =
-    object "ExecutableScope" $
-        requiredField' "executable-scope" .= (\a -> a)
+  codec = stringConstCodec $ fromList [(ExecutablePublic, "public"), (ExecutablePrivate, "private")]
 
 instance HasCodec TestSuite where
   codec =
@@ -328,16 +349,45 @@ instance HasCodec Benchmark where
         <*> requiredField' "build-info" .= benchmarkBuildInfo
 
 instance HasCodec BenchmarkType where
-  -- TODO: ?
-  codec = dimapCodec undefined prettyShow codec
+  codec = object "BenchmarkType" $ dimapCodec f g $
+    eitherCodec (requiredField' "benchmark-type") $
+      (,)
+        <$> requiredField' "type" .= fst
+        <*> requiredField' "version" .= snd
+    where
+      f = \case
+        Left v -> BenchmarkTypeExe v
+        Right (s,v) -> BenchmarkTypeUnknown s v
+      g = \case
+        BenchmarkTypeExe v -> Left v
+        BenchmarkTypeUnknown s v -> Right (s,v)
 
 instance HasCodec BenchmarkInterface where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec f g $ eitherCodec (object "BenchmarkExeV10" $ (,)
+        <$> requiredField' "version" .= fst
+        <*> requiredField' "filepath" .= snd) $
+          object "BenchmarkUnsupported" $ requiredField' "benchmark-type"
+    where
+      f = \case
+        Left (version, file) -> BenchmarkExeV10 version file
+        Right t -> BenchmarkUnsupported t
+      g = \case
+        BenchmarkExeV10 version file -> Left (version, file)
+        BenchmarkUnsupported t -> Right t
 
 instance HasCodec ModuleRenaming where
-  -- TODO: ?
-  codec = undefined
+  codec = object "ModuleRenaming" $ dimapCodec f g $
+      eitherCodec (pure DefaultRenaming) $
+        eitherCodec (requiredField' "name") (requiredField' "name")
+    where
+      f = \case
+        Left _ -> DefaultRenaming
+        Right (Left m) -> ModuleRenaming m
+        Right (Right m) -> HidingRenaming m
+      g = \case
+        DefaultRenaming  -> Left ()
+        ModuleRenaming m -> Right $ Left m
+        HidingRenaming m -> Right $ Right m
 
 instance HasCodec IncludeRenaming where
   codec =
@@ -354,34 +404,72 @@ instance HasCodec Mixin where
         <*> requiredField' "include-renaming" .= mixinIncludeRenaming
 
 instance HasCodec LegacyExeDependency where
-  -- TODO: ?
-  codec = undefined
+  codec =
+    object "LegacyExeDependency" $
+      LegacyExeDependency
+        <$> requiredField' "package-name" .= (\(LegacyExeDependency s _) -> s)
+        <*> requiredField' "include-renaming" .= (\(LegacyExeDependency _ vr) -> vr)
 
 instance HasCodec ExeDependency where
   codec =
     object "ExeDependency" $
       ExeDependency
-        <$> requiredField' "package-name" .= (\(ExeDependency a b c) -> a)
-        <*> requiredField' "executable-component-name" .= (\(ExeDependency a b c) -> b)
-        <*> requiredField' "version-range" .= (\(ExeDependency a b c) -> c)
+        <$> requiredField' "package-name" .= (\(ExeDependency a _ _) -> a)
+        <*> requiredField' "executable-component-name" .= (\(ExeDependency _ b _) -> b)
+        <*> requiredField' "version-range" .= (\(ExeDependency _ _ c) -> c)
 
 instance HasCodec PkgconfigDependency where
-  -- TODO: ?
-  codec = undefined
+  codec =
+    object "PkgconfigDependency" $
+      PkgconfigDependency
+        <$> requiredField' "pkgconfigName" .= (\(PkgconfigDependency name _) -> name)
+        <*> requiredField' "pkgconfigVersionRange" .= (\(PkgconfigDependency _ version) -> version)
+
+instance HasCodec PkgconfigName where
+  codec = dimapCodec mkPkgconfigName unPkgconfigName codec
+
+instance HasCodec PkgconfigVersionRange where
+  codec = dimapCodec f g codec
+    where
+      f = \s -> case eitherParsec s of
+        Left pe -> error "Invalid version string"
+        Right a -> a
+      g = prettyShow
+
+instance HasCodec PkgconfigVersion where
+  codec = dimapCodec (PkgconfigVersion . BSU.fromString) (\(PkgconfigVersion v) -> show v) codec
 
 instance HasCodec Language where
-  codec =
-    object "Language" $
-      UnknownLanguage
-        <$> requiredField' "language" .=
-          (\ a -> case a of
-            Haskell98 -> "Haskell98"
-            Haskell2010 -> "Haskell2010"
-            (UnknownLanguage b) -> b)
+  codec = object "Language" $ dimapCodec f g $
+      eitherCodec (pure Haskell98) $
+        eitherCodec (pure Haskell2010) (requiredField' "name")
+    where
+      f = \case
+        Left _ -> Haskell98
+        Right (Left _) -> Haskell2010
+        Right (Right s) -> UnknownLanguage s
+      g = \case
+        Haskell98 -> Left ()
+        Haskell2010 -> Right $ Left ()
+        UnknownLanguage s -> Right $ Right s
 
 instance HasCodec Extension where
-  -- TODO: ?
-  codec = undefined
+  codec = object "Extension" $ dimapCodec f g $
+      eitherCodec (requiredField' "enable-extension") $
+        eitherCodec (requiredField' "disable-extension")
+          (requiredField' "unknown-extension")
+    where
+      f = \case
+        Left e -> EnableExtension e
+        Right (Left e) -> DisableExtension e
+        Right (Right s) -> UnknownExtension s
+      g = \case
+        EnableExtension e -> Left e
+        DisableExtension e -> Right $ Left e
+        UnknownExtension e -> Right $ Right e
+
+instance HasCodec KnownExtension where
+  codec = shownBoundedEnumCodec
 
 instance HasCodec BuildInfo where
   codec =

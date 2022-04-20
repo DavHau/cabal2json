@@ -29,8 +29,12 @@ import Distribution.Types.TestSuite as Cabal
 import Distribution.Types.TestSuiteInterface as Cabal
 import Distribution.Types.UnqualComponentName as Cabal
 import Distribution.Verbosity as Cabal
+import Distribution.Types.VersionRange as Cabal
+import Distribution.Types.PkgconfigVersionRange as Cabal
+import Distribution.Types.PkgconfigVersion as Cabal
 import Test.Syd
 import Test.Syd.Aeson
+import Language.Haskell.Extension as Cabal
 
 spec :: Spec
 spec = do
@@ -40,7 +44,8 @@ spec = do
       (Cabal.readGenericPackageDescription Cabal.silent "cabal2json.cabal")
 
   schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
-  schemaSpec @Cabal.BuildInfo "build-info"
+  -- schemaSpec @Cabal.Executable "executable"
+  -- schemaSpec @Cabal.BuildInfo "build-info"
   schemaSpec @Cabal.ModuleName "module-name"
   schemaSpec @Cabal.ModuleReexport "module-reexport"
   schemaSpec @Cabal.LibraryName "library-name"
@@ -55,10 +60,16 @@ spec = do
   schemaSpec @Cabal.TestSuiteInterface "test-suite-interface"
   schemaSpec @Cabal.TestSuite "test-suite"
   schemaSpec @Cabal.ExecutableScope "executable-scope"
-  schemaSpec @Cabal.Executable "executable"
+  schemaSpec @Cabal.Extension "extension"
+  schemaSpec @Cabal.KnownExtension "KnownExtension"
   schemaSpec @Cabal.Flag "flag"
+  schemaSpec @Cabal.FlagName "flag-name"
   schemaSpec @Cabal.PackageDescription "package-description"
   schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
+  schemaSpec @Cabal.VersionRange "version-range"
+  schemaSpec @Cabal.PkgconfigVersion "pkgconfig-version"
+  schemaSpec @Cabal.PkgconfigVersionRange "pkgconfig-version-range"
+  schemaSpec @Cabal.Language "language"
 
 schemaSpec :: forall a. HasCodec a => String -> Spec
 schemaSpec name =

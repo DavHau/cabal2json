@@ -1,0 +1,10 @@
+# [32many of[m
+[ # BenchmarkExeV10
+  [37mversion[m: # [31mrequired[m
+    - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+  [37mfilepath[m: # [31mrequired[m
+    [33m<string>[m
+, # BenchmarkUnsupported
+  [37munknown-extension[m: # [31mrequired[m
+    [33m<string>[m
+]

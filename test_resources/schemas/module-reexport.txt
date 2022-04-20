@@ -1,0 +1,8 @@
+# ModuleReexport
+[37mmoduleReexportOriginalPackage[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m
+[37mmoduleReexportOriginalName[m: # [31mrequired[m
+  - [33m<string>[m
+[37mmoduleReexportName[m: # [31mrequired[m
+  - [33m<string>[m
