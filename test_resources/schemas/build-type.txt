@@ -1,0 +1,6 @@
+# [32many of[m
+[ Simple
+, Configure
+, Make
+, Custom
+]

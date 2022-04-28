@@ -17,7 +17,7 @@ library:
   - hashable
   - pretty-show
   - unordered-containers
-  - utf8-string
+  - text
   - pretty
 
 executables:

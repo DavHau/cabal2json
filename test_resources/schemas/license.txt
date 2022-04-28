@@ -1,0 +1,11 @@
+# [32many of[m
+[ BSD2
+, BSD3
+, BSD4
+, MIT
+, ISC
+, PublicDomain
+, AllRightsReserved
+, UnspecifiedLicense
+, OtherLicense
+]

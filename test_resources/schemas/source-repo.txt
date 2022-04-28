@@ -1,0 +1,36 @@
+# SourceRepo
+[37mkind[m: # [31mrequired[m
+  # RepoKind
+  # [32many of[m
+  [ <object>
+  , <object>
+  , [37mrepo-kind[m: # [31mrequired[m
+      [33m<string>[m
+  ]
+[37mtype[m: # [31mrequired[m
+  # [32many of[m
+  [ [33mnull[m
+  , Darcs
+  , Git
+  , SVN
+  , CVS
+  , Mercurial
+  , GnuArch
+  , Bazaar
+  , Monotone
+  ]
+[37mlocation[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m
+[37mmodule[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m
+[37mbranch[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m
+[37mtag[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m
+[37msubdir[m: # [31mrequired[m
+  # [32mor null[m
+  [33m<string>[m

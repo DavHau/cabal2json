@@ -63,14 +63,17 @@ import Language.Haskell.Extension
 import System.Environment
 import Text.Show.Pretty (pPrint)
 import Data.List.NonEmpty (fromList)
-import Distribution.Types.PkgconfigName (PkgconfigName, mkPkgconfigName, unPkgconfigName)
+import Distribution.Types.PkgconfigName
 import Distribution.Types.PkgconfigVersionRange
-import Data.Word (Word8)
 import Distribution.Types.PkgconfigVersion
-import Data.ByteString.UTF8 as BSU
 import Text.PrettyPrint
 import Distribution.Parsec (Parsec(parsec), CabalParsing (parsecHaskellString), eitherParsec)
 import Distribution.Compat.Lens (_1)
+import Distribution.PackageDescription
+import qualified Distribution.SPDX as SPDX
+import Distribution.SPDX (LicenseExpression(..), SimpleLicenseExpression(..))
+import Data.Text.Encoding
+import Data.Text (pack)
 
 cabal2JSON :: IO ()
 cabal2JSON = do
@@ -119,50 +122,86 @@ mapInListForCodec fromText toText =
 instance Hashable UnqualComponentName where
   hashWithSalt s = hashWithSalt s . unUnqualComponentName
 
-instance HasCodec PackageDescription where
-  codec =
-    object "PackageDescription" $
-      PackageDescription
-        <$> requiredField' "spec-version" .= specVersionRaw
-        <*> requiredField' "package" .= package
-        <*> requiredField' "license" .= licenseRaw
-        <*> requiredField' "license-files" .= licenseFiles
-        <*> requiredField' "copyright" .= copyright
-        <*> requiredField' "maintainer" .= maintainer
-        <*> requiredField' "author" .= author
-        <*> requiredField' "stability" .= stability
-        <*> requiredField' "tested-with" .= testedWith
-        <*> requiredField' "homepage" .= homepage
-        <*> requiredField' "pkg-url" .= pkgUrl
-        <*> requiredField' "bug-reports" .= bugReports
-        <*> requiredField' "source-repos" .= sourceRepos
-        <*> requiredField' "synopsis" .= synopsis
-        <*> requiredField' "description" .= description
-        <*> requiredField' "category" .= category
-        <*> requiredFieldWith' "custom-fields" undefined .= customFieldsPD
-        <*> requiredField' "build-type-raw" .= buildTypeRaw
-        <*> requiredField' "custom-setup" .= setupBuildInfo
-        <*> requiredField' "library" .= library
-        <*> requiredField' "sublibraries" .= subLibraries
-        <*> requiredField' "executables" .= executables
-        <*> requiredField' "foreign-libs" .= foreignLibs
-        <*> requiredField' "test-suites" .= testSuites
-        <*> requiredField' "benchmarks" .= benchmarks
-        <*> requiredField' "data-files" .= dataFiles
-        <*> requiredField' "data-dir" .= dataDir
-        <*> requiredField' "extra-source-files" .= extraSrcFiles
-        <*> requiredField' "extra-tmp-files" .= extraTmpFiles
-        <*> requiredField' "extra-doc-files" .= extraDocFiles
+instance HasCodec VersionRange where
+  codec = dimapCodec f g codec
+    where
+      f = \s -> case eitherParsec s of
+        Left pe -> error "Invalid version string"
+        Right a -> a
+      g = prettyShow
 
-instance HasCodec (CompilerFlavor, VersionRange) where
-  -- TODO: ?
-  codec = undefined
+instance HasCodec CompilerFlavor where
+  codec = stringConstCodec
+    [ (GHC, "GHC")
+    , (GHCJS, "GHCJS")
+    , (NHC, "NHC")
+    , (YHC, "YHC")
+    , (HBC, "HBC")
+    , (Helium, "Helium")
+    , (JHC, "JHC")
+    , (LHC, "LHC")
+    , (UHC, "UHC")
+    , (Eta, "Eta")
+    ]
+
+instance HasCodec PackageDescription where
+  codec = object "PackageDescription" $
+    PackageDescription
+      <$> requiredField' "spec-version" .= specVersionRaw
+      <*> requiredField' "package" .= package
+      <*> requiredField' "license" .= licenseRaw
+      <*> requiredField' "license-files" .= licenseFiles
+      <*> requiredField' "copyright" .= copyright
+      <*> requiredField' "maintainer" .= maintainer
+      <*> requiredField' "author" .= author
+      <*> requiredField' "stability" .= stability
+      <*> requiredField' "tested-with" .= testedWith
+      <*> requiredField' "homepage" .= homepage
+      <*> requiredField' "pkg-url" .= pkgUrl
+      <*> requiredField' "bug-reports" .= bugReports
+      <*> requiredField' "source-repos" .= sourceRepos
+      <*> requiredField' "synopsis" .= synopsis
+      <*> requiredField' "description" .= description
+      <*> requiredField' "category" .= category
+      <*> requiredField' "custom-fields" .= customFieldsPD
+      <*> requiredField' "build-type-raw" .= buildTypeRaw
+      <*> requiredField' "custom-setup" .= setupBuildInfo
+      <*> requiredField' "library" .= library
+      <*> requiredField' "sublibraries" .= subLibraries
+      <*> requiredField' "executables" .= executables
+      <*> requiredField' "foreign-libs" .= foreignLibs
+      <*> requiredField' "test-suites" .= testSuites
+      <*> requiredField' "benchmarks" .= benchmarks
+      <*> requiredField' "data-files" .= dataFiles
+      <*> requiredField' "data-dir" .= dataDir
+      <*> requiredField' "extra-source-files" .= extraSrcFiles
+      <*> requiredField' "extra-tmp-files" .= extraTmpFiles
+      <*> requiredField' "extra-doc-files" .= extraDocFiles
 
 instance HasCodec (PerCompilerFlavor [String]) where
-  codec = dimapCodec (uncurry PerCompilerFlavor) (\(PerCompilerFlavor a b) -> (a,b)) codec
+  codec = dimapCodec (uncurry PerCompilerFlavor) (\(PerCompilerFlavor a b) -> (a, b)) codec
 
 instance (HasCodec a) => HasCodec (a, a) where
   codec = dimapCodec (\(a:[b]) -> (a, b)) (\(a, b) -> [a, b]) codec
+
+instance HasCodec (CompilerFlavor, VersionRange) where
+  codec = object "(CompilerFlavor, VersionRange)" $
+    (,)
+      <$> requiredField' "compiler" .= fst
+      <*> requiredField' "versionRange" .= snd
+
+
+instance (HasCodec a) => HasCodec (a, a, a) where
+  codec = dimapCodec (\(a:b:[c]) -> (a, b, c)) (\(a, b, c) -> [a, b, c]) codec
+
+instance HasCodec (Maybe String, String) where
+  codec = dimapCodec (\case
+      ("", s) -> (Nothing, s)
+      (s1, s2) -> (Just s1, s2)
+    ) (\case
+      (Nothing, s) -> ("", s)
+      (Just s1, s2) -> (s1, s2)
+    ) codec
 
 instance HasCodec PackageName where
   codec = dimapCodec mkPackageName unPackageName codec
@@ -175,12 +214,32 @@ instance HasCodec PackageIdentifier where
         <*> requiredField' "version" .= pkgVersion
 
 instance HasCodec RepoKind where
-  -- TODO: ?
-  codec = undefined
+  codec = object "RepoKind" $ dimapCodec f g $
+    eitherCodec (pure RepoHead) $
+      eitherCodec (pure RepoThis) $
+        requiredField' "repo-kind"
+    where
+      f = \case
+        Left _ -> RepoHead
+        Right (Left _) -> RepoThis
+        Right (Right s) -> RepoKindUnknown s
+      g = \case
+        RepoHead -> Left ()
+        RepoThis -> Right $ Left ()
+        RepoKindUnknown s -> Right $ Right s
 
 instance HasCodec RepoType where
-  -- TODO: ?
-  codec = undefined
+  -- TODO add OtherRepoType
+  codec = stringConstCodec
+    [ (Darcs, "Darcs")
+    , (Git, "Git")
+    , (SVN, "SVN")
+    , (CVS, "CVS")
+    , (Mercurial, "Mercurial")
+    , (GnuArch, "GnuArch")
+    , (Bazaar, "Bazaar")
+    , (Monotone, "Monotone")
+    ]
 
 instance HasCodec Dependency where
   codec = object "Dependency" $
@@ -201,29 +260,79 @@ instance HasCodec SourceRepo where
        <*> requiredField' "tag" .= repoTag
        <*> requiredField' "subdir" .= repoSubdir
 
-instance HasCodec VersionRange where
-  codec = dimapCodec f g codec
-    where
-      f = \s -> case eitherParsec s of
-        Left pe -> error "Invalid version string"
-        Right a -> a
-      g = prettyShow
-
 instance HasCodec ShortText where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec toShortText fromShortText codec
 
 instance HasCodec Cabal.License where
-  -- TODO: ?
-  codec = undefined
+  -- TODO add others
+  codec = stringConstCodec
+    [ (BSD2, "BSD2")
+    , (BSD3, "BSD3")
+    , (BSD4, "BSD4")
+    , (MIT, "MIT")
+    , (ISC, "ISC")
+    , (PublicDomain, "PublicDomain")
+    , (AllRightsReserved, "AllRightsReserved")
+    , (UnspecifiedLicense, "UnspecifiedLicense")
+    , (OtherLicense, "OtherLicense")
+    ]
 
 instance HasCodec SPDX.License where
-  -- TODO: ?
-  codec = undefined
+  codec = object "spdx-license" $ dimapCodec f g $
+      eitherCodec (pure NONE) $
+        requiredField' "license-expression"
+    where
+      f = \case
+        Left _ -> NONE
+        Right exp -> License exp
+      g = \case
+        NONE -> Left "None"
+        License exp -> Right exp
+
+instance HasCodec SPDX.LicenseExpression where
+  codec = object "LicenseExpression" $ dimapCodec f g $
+    eitherCodec ((,) <$> requiredField' "expression" .= fst <*> requiredField' "exception-id" .= snd) $
+      eitherCodec ((,) <$> requiredField' "expression-1" .= fst <*> requiredField' "expression-2" .= snd) $
+        (,) <$> requiredField' "expression-1" .= fst <*> requiredField' "expression-2" .= snd
+    where
+      f = \case
+        Left (exp, exc) -> ELicense exp exc
+        Right (Left (exp1, exp2)) -> EAnd exp1 exp2
+        Right (Right (exp1, exp2)) -> EOr exp1 exp2
+      g = \case
+        ELicense exp exc -> Left (exp, exc)
+        EAnd exp1 exp2 -> Right $ Left (exp1, exp2)
+        EOr exp1 exp2 -> Right $ Right (exp1, exp2)
+
+instance HasCodec SPDX.SimpleLicenseExpression where
+  codec = object "SimpleLicenseExpression" $ dimapCodec f g $
+    eitherCodec (requiredField' "id") $
+      eitherCodec (requiredField' "id-plus") $
+        requiredField' "license-ref"
+    where
+      f = \case
+        Left id -> ELicenseId id
+        Right (Left id) -> ELicenseIdPlus id
+        Right (Right ref) -> ELicenseRef ref
+      g = \case
+        ELicenseId id -> Left id
+        ELicenseIdPlus id -> Right $ Left id
+        ELicenseRef ref -> Right $ Right ref
+
+instance HasCodec SPDX.LicenseId where
+  codec = shownBoundedEnumCodec
+
+instance HasCodec SPDX.LicenseRef where
+  codec = dimapCodec f g codec
+    where
+      f = uncurry SPDX.mkLicenseRef'
+      g = \l -> (SPDX.licenseDocumentRef l, SPDX.licenseRef l)
+
+instance HasCodec SPDX.LicenseExceptionId where
+  codec = shownBoundedEnumCodec
 
 instance HasCodec BuildType where
-  -- TODO: ?
-  codec = undefined
+  codec = stringConstCodec [(Simple, "Simple"), (Configure, "Configure"), (Make, "Make"), (Custom, "Custom")]
 
 instance HasCodec SetupBuildInfo where
   codec =
@@ -232,7 +341,6 @@ instance HasCodec SetupBuildInfo where
         <$> requiredField' "setup-depends" .= setupDepends
         -- TODO: not needed
         <*> requiredField' "__defaultSetupDepends" .= defaultSetupDepends
-
 
 instance HasCodec Flag where
   codec =
@@ -286,8 +394,7 @@ instance HasCodec ModuleReexport where
         <*> requiredField' "moduleReexportName" .= moduleReexportName
 
 instance HasCodec LibraryVisibility where
-  -- TODO: ?
-  codec = undefined
+  codec = stringConstCodec [(LibraryVisibilityPublic, "LibraryVisibilityPublic"), (LibraryVisibilityPrivate, "LibraryVisibilityPrivate")]
 
 instance HasCodec ForeignLib where
   codec =
@@ -302,16 +409,13 @@ instance HasCodec ForeignLib where
         <*> requiredField' "mod-def-files" .= foreignLibModDefFile
 
 instance HasCodec ForeignLibType where
-  -- TODO: ?
-  codec = undefined
+  codec = stringConstCodec [(ForeignLibNativeShared, "ForeignLibNativeShared"), (ForeignLibNativeStatic, "ForeignLibNativeStatic"), (ForeignLibTypeUnknown, "ForeignLibTypeUnknown")]
 
 instance HasCodec ForeignLibOption where
-  -- TODO: ?
-  codec = undefined
+  codec = literalTextValueCodec ForeignLibStandalone "ForeignLibStandalone"
 
 instance HasCodec LibVersionInfo where
-  -- TODO: ?
-  codec = undefined
+  codec = dimapCodec mkLibVersionInfo libVersionInfoCRA codec
 
 instance HasCodec Version where
   codec = dimapCodec mkVersion versionNumbers codec
@@ -337,8 +441,34 @@ instance HasCodec TestSuite where
         <*> requiredField' "build-info" .= testBuildInfo
 
 instance HasCodec TestSuiteInterface where
-  -- TODO: ?
-  codec = undefined
+  codec = object "TestSuiteInterface" $ dimapCodec f g $
+    eitherCodec ((,) <$> requiredField' "version" .= fst <*> requiredField' "filepath" .= snd) $
+      eitherCodec ((,)<$> requiredField' "version" .= fst <*> requiredField' "module-name" .= snd) $
+         requiredField' "type"
+    where
+      f = \case
+        Left (v, fp) -> TestSuiteExeV10 v fp
+        Right (Left (v, mn)) -> TestSuiteLibV09 v mn
+        Right (Right tt) -> TestSuiteUnsupported tt
+      g = \case
+        TestSuiteExeV10 v fp -> Left (v, fp)
+        TestSuiteLibV09 v mn -> Right $ Left(v,mn)
+        TestSuiteUnsupported tt -> Right $ Right tt
+
+instance HasCodec TestType where
+  codec = object "TestType" $ dimapCodec f g $
+    eitherCodec (requiredField' "version") $
+      eitherCodec (requiredField' "version") $
+         (,) <$> requiredField' "name" .= fst <*> requiredField' "version" .= snd
+    where
+      f = \case
+        Left v -> TestTypeExe v
+        Right (Left v) -> TestTypeLib v
+        Right (Right (s, v)) -> TestTypeUnknown s v
+      g = \case
+        TestTypeExe v -> Left v
+        TestTypeLib v -> Right $ Left v
+        TestTypeUnknown s v -> Right $ Right (s, v)
 
 instance HasCodec Benchmark where
   codec =
@@ -437,7 +567,13 @@ instance HasCodec PkgconfigVersionRange where
       g = prettyShow
 
 instance HasCodec PkgconfigVersion where
-  codec = dimapCodec (PkgconfigVersion . BSU.fromString) (\(PkgconfigVersion v) -> show v) codec
+  codec = bimapCodec
+    (Right . PkgconfigVersion . encodeUtf8)
+    (\(PkgconfigVersion v) -> let decoded = decodeUtf8' v in case decoded of
+        Left ex -> pack $ show ex
+        Right txt -> txt
+    )
+    codec
 
 instance HasCodec Language where
   codec = object "Language" $ dimapCodec f g $

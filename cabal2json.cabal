@@ -32,8 +32,8 @@ library
     , hashable
     , pretty
     , pretty-show
+    , text
     , unordered-containers
-    , utf8-string
   default-language: Haskell2010
 
 executable cabal2json

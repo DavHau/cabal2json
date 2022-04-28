@@ -35,6 +35,11 @@ import Distribution.Types.PkgconfigVersion as Cabal
 import Test.Syd
 import Test.Syd.Aeson
 import Language.Haskell.Extension as Cabal
+import Distribution.Types.Version
+import qualified Distribution.Make as Cabal
+import Distribution.Utils.ShortText as Cabal
+import Distribution.Types.BuildType as Cabal
+import Distribution.Types.SourceRepo as Cabal
 
 spec :: Spec
 spec = do
@@ -44,32 +49,39 @@ spec = do
       (Cabal.readGenericPackageDescription Cabal.silent "cabal2json.cabal")
 
   schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
-  -- schemaSpec @Cabal.Executable "executable"
-  -- schemaSpec @Cabal.BuildInfo "build-info"
-  schemaSpec @Cabal.ModuleName "module-name"
-  schemaSpec @Cabal.ModuleReexport "module-reexport"
-  schemaSpec @Cabal.LibraryName "library-name"
-  schemaSpec @Cabal.LibraryVisibility "library-visibility"
-  schemaSpec @Cabal.Library "library"
-  schemaSpec @Cabal.ForeignLibType "foreign-lib-type"
-  schemaSpec @Cabal.ForeignLibOption "foreign-lib-option"
-  schemaSpec @Cabal.ForeignLib "foreign-lib"
+  -- schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
+  -- schemaSpec @Cabal.PackageDescription "package-description"
+  schemaSpec @Cabal.PackageIdentifier  "package-identified"
   schemaSpec @Cabal.BenchmarkType "benchmark-type"
   schemaSpec @Cabal.BenchmarkInterface "benchmark-interface"
   schemaSpec @Cabal.Benchmark "benchmark"
-  schemaSpec @Cabal.TestSuiteInterface "test-suite-interface"
-  schemaSpec @Cabal.TestSuite "test-suite"
+  schemaSpec @Cabal.BuildInfo "build-info"
+  schemaSpec @Cabal.BuildType "build-type"
+  schemaSpec @Cabal.Executable "executable"
   schemaSpec @Cabal.ExecutableScope "executable-scope"
   schemaSpec @Cabal.Extension "extension"
-  schemaSpec @Cabal.KnownExtension "KnownExtension"
   schemaSpec @Cabal.Flag "flag"
   schemaSpec @Cabal.FlagName "flag-name"
-  schemaSpec @Cabal.PackageDescription "package-description"
-  schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
-  schemaSpec @Cabal.VersionRange "version-range"
+  schemaSpec @Cabal.ForeignLibType "foreign-lib-type"
+  schemaSpec @Cabal.ForeignLibOption "foreign-lib-option"
+  schemaSpec @Cabal.ForeignLib "foreign-lib"
+  schemaSpec @Cabal.KnownExtension "KnownExtension"
+  schemaSpec @Cabal.Language "language"
+  schemaSpec @Cabal.Library "library"
+  schemaSpec @Cabal.LibraryName "library-name"
+  schemaSpec @Cabal.LibraryVisibility "library-visibility"
+  schemaSpec @Cabal.License "license"
+  schemaSpec @Cabal.ModuleName "module-name"
+  schemaSpec @Cabal.ModuleReexport "module-reexport"
+  schemaSpec @Cabal.PackageIdentifier "package-identifier"
   schemaSpec @Cabal.PkgconfigVersion "pkgconfig-version"
   schemaSpec @Cabal.PkgconfigVersionRange "pkgconfig-version-range"
-  schemaSpec @Cabal.Language "language"
+  schemaSpec @Cabal.ShortText "short-text"
+  schemaSpec @Cabal.SourceRepo "source-repo"
+  schemaSpec @Cabal.TestSuiteInterface "test-suite-interface"
+  schemaSpec @Cabal.TestSuite "test-suite"
+  schemaSpec @Cabal.Version "version"
+  schemaSpec @Cabal.VersionRange "version-range"
 
 schemaSpec :: forall a. HasCodec a => String -> Spec
 schemaSpec name =
