@@ -290,10 +290,10 @@ instance HasCodec SPDX.License where
         License exp -> Right exp
 
 instance HasCodec SPDX.LicenseExpression where
-  codec = object "LicenseExpression" $ dimapCodec f g $
-    eitherCodec ((,) <$> requiredField' "expression" .= fst <*> requiredField' "exception-id" .= snd) $
-      eitherCodec ((,) <$> requiredField' "expression-1" .= fst <*> requiredField' "expression-2" .= snd) $
-        (,) <$> requiredField' "expression-1" .= fst <*> requiredField' "expression-2" .= snd
+  codec = dimapCodec f g $
+    eitherCodec (object "ELicense" $ (,) <$> requiredField' "expression" .= fst <*> requiredField' "exception-id" .= snd) $
+      eitherCodec (object "EAnd" $ (,) <$> requiredField' "expression-1" .= fst <*> requiredField' "expression-2" .= snd) $
+        object "EOr" $ (,) <$> requiredField' "expression-11" .= fst <*> requiredField' "expression-22" .= snd
     where
       f = \case
         Left (exp, exc) -> ELicense exp exc
@@ -301,7 +301,7 @@ instance HasCodec SPDX.LicenseExpression where
         Right (Right (exp1, exp2)) -> EOr exp1 exp2
       g = \case
         ELicense exp exc -> Left (exp, exc)
-        EAnd exp1 exp2 -> Right $ Left (exp1, exp2)
+        EAnd exp1 exp2 -> Right $ Left(exp1, exp2)
         EOr exp1 exp2 -> Right $ Right (exp1, exp2)
 
 instance HasCodec SPDX.SimpleLicenseExpression where
@@ -569,7 +569,7 @@ instance HasCodec PkgconfigVersionRange where
 instance HasCodec PkgconfigVersion where
   codec = bimapCodec
     (Right . PkgconfigVersion . encodeUtf8)
-    (\(PkgconfigVersion v) -> let decoded = decodeUtf8' v in case decoded of
+    (\(PkgconfigVersion v) -> case decodeUtf8' v of
         Left ex -> pack $ show ex
         Right txt -> txt
     )

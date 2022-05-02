@@ -35,20 +35,21 @@ import Distribution.Types.PkgconfigVersion as Cabal
 import Test.Syd
 import Test.Syd.Aeson
 import Language.Haskell.Extension as Cabal
+import Data.ByteString.Lazy.UTF8 as BLU
 import Distribution.Types.Version
 import qualified Distribution.Make as Cabal
 import Distribution.Utils.ShortText as Cabal
 import Distribution.Types.BuildType as Cabal
 import Distribution.Types.SourceRepo as Cabal
+import qualified Distribution.SPDX as SPDX
 
 spec :: Spec
 spec = do
   it "outputs the same json for the cabal2json cabal file" $
     goldenJSONValueFile
       "test_resources/json/cabal2json.cabal.json"
-      (Cabal.readGenericPackageDescription Cabal.silent "cabal2json.cabal")
+      (Cabal.readGenericPackageDescription Cabal.silent "test_resources/json/cabal2json.cabal")
 
-  schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
   -- schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
   -- schemaSpec @Cabal.PackageDescription "package-description"
   schemaSpec @Cabal.PackageIdentifier  "package-identified"
@@ -80,8 +81,16 @@ spec = do
   schemaSpec @Cabal.SourceRepo "source-repo"
   schemaSpec @Cabal.TestSuiteInterface "test-suite-interface"
   schemaSpec @Cabal.TestSuite "test-suite"
+  schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
   schemaSpec @Cabal.Version "version"
   schemaSpec @Cabal.VersionRange "version-range"
+  schemaSpec @Cabal.VersionRange "version-range"
+  -- schemaSpec @SPDX.License "spdx-license"
+  -- schemaSpec @SPDX.LicenseExpression "spdx-license-expression"
+  schemaSpec @SPDX.SimpleLicenseExpression "spdx-simple-license-expression"
+  schemaSpec @SPDX.LicenseExceptionId "spdx-license-exception-id"
+  schemaSpec @SPDX.LicenseRef "spdx-license-ref"
+  schemaSpec @SPDX.LicenseId "spdx-license-id"
 
 schemaSpec :: forall a. HasCodec a => String -> Spec
 schemaSpec name =
