@@ -14,11 +14,12 @@ library:
   - Cabal
   - aeson
   - autodocodec
+  - bytestring
   - hashable
-  - pretty-show
-  - unordered-containers
-  - text
   - pretty
+  - pretty-show
+  - text
+  - unordered-containers
 
 executables:
   cabal2json:

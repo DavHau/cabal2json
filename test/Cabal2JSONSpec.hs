@@ -7,12 +7,15 @@ module Cabal2JSONSpec (spec) where
 import Autodocodec
 import Autodocodec.Yaml
 import Cabal2JSON ()
+import qualified Distribution.Make as Cabal
 import Distribution.ModuleName as Cabal
 import Distribution.PackageDescription.Parsec as Cabal
+import qualified Distribution.SPDX as SPDX
 import Distribution.Types.Benchmark as Cabal
 import Distribution.Types.BenchmarkInterface as Cabal
 import Distribution.Types.BenchmarkType as Cabal
 import Distribution.Types.BuildInfo as Cabal
+import Distribution.Types.BuildType as Cabal
 import Distribution.Types.Executable as Cabal
 import Distribution.Types.ExecutableScope as Cabal
 import Distribution.Types.Flag as Cabal
@@ -25,33 +28,30 @@ import Distribution.Types.LibraryName as Cabal
 import Distribution.Types.LibraryVisibility as Cabal
 import Distribution.Types.ModuleReexport as Cabal
 import Distribution.Types.PackageDescription as Cabal
+import Distribution.Types.PkgconfigVersion as Cabal
+import Distribution.Types.PkgconfigVersionRange as Cabal
+import Distribution.Types.SourceRepo as Cabal
 import Distribution.Types.TestSuite as Cabal
 import Distribution.Types.TestSuiteInterface as Cabal
 import Distribution.Types.UnqualComponentName as Cabal
-import Distribution.Verbosity as Cabal
+import Distribution.Types.Version
 import Distribution.Types.VersionRange as Cabal
-import Distribution.Types.PkgconfigVersionRange as Cabal
-import Distribution.Types.PkgconfigVersion as Cabal
+import Distribution.Utils.ShortText as Cabal
+import Distribution.Verbosity as Cabal
+import Language.Haskell.Extension as Cabal
 import Test.Syd
 import Test.Syd.Aeson
-import Language.Haskell.Extension as Cabal
-import Distribution.Types.Version
-import qualified Distribution.Make as Cabal
-import Distribution.Utils.ShortText as Cabal
-import Distribution.Types.BuildType as Cabal
-import Distribution.Types.SourceRepo as Cabal
-import qualified Distribution.SPDX as SPDX
 
 spec :: Spec
 spec = do
-  -- it "outputs the same json for the cabal2json cabal file" $
-  --   goldenJSONValueFile
-  --     "test_resources/json/cabal2json.cabal.json"
-  --     (Cabal.readGenericPackageDescription Cabal.silent "test_resources/json/cabal2json.cabal")
+  it "outputs the same json for the cabal2json cabal file" $
+    goldenJSONValueFile
+      "test_resources/json/cabal2json.cabal.json"
+      (Cabal.readGenericPackageDescription Cabal.silent "cabal2json.cabal")
 
-  -- schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
-  -- schemaSpec @Cabal.PackageDescription "package-description"
-  schemaSpec @Cabal.PackageIdentifier  "package-identified"
+  schemaSpec @Cabal.GenericPackageDescription "generic-package-description"
+  schemaSpec @Cabal.PackageDescription "package-description"
+  schemaSpec @Cabal.PackageIdentifier "package-identified"
   schemaSpec @Cabal.BenchmarkType "benchmark-type"
   schemaSpec @Cabal.BenchmarkInterface "benchmark-interface"
   schemaSpec @Cabal.Benchmark "benchmark"
@@ -84,7 +84,7 @@ spec = do
   schemaSpec @Cabal.Version "version"
   schemaSpec @Cabal.VersionRange "version-range"
   schemaSpec @Cabal.VersionRange "version-range"
-  -- schemaSpec @SPDX.License "spdx-license"
+  schemaSpec @SPDX.License "spdx-license"
   schemaSpec @SPDX.LicenseExpression "spdx-license-expression"
   schemaSpec @SPDX.SimpleLicenseExpression "spdx-simple-license-expression"
   schemaSpec @SPDX.LicenseExceptionId "spdx-license-exception-id"
