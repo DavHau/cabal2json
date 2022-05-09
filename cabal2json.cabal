@@ -67,4 +67,5 @@ test-suite cabal2json-test
     , cabal2json
     , sydtest
     , sydtest-aeson
+    , utf8-string
   default-language: Haskell2010
