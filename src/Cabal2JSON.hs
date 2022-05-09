@@ -76,6 +76,8 @@ import Language.Haskell.Extension
 import System.Environment
 import Text.PrettyPrint
 import Text.Show.Pretty (pPrint)
+import Distribution.System
+import Distribution.Types.Condition
 
 cabal2JSON :: IO ()
 cabal2JSON = do
@@ -376,8 +378,102 @@ instance HasCodec FlagName where
   codec = dimapCodec mkFlagName unFlagName codec
 
 instance HasCodec a => HasCodec (CondTree ConfVar [Dependency] a) where
-  -- TODO: ?
-  codec = undefined
+  codec = named "ConditionalTree" $ object "CondTree" $
+      CondNode
+        <$> requiredField' "condTreeData" .= condTreeData
+        <*> requiredField' "condTreeConstraints" .= condTreeConstraints
+        <*> requiredField' "condTreeComponents" .= condTreeComponents
+
+instance (HasCodec a) => HasCodec (CondBranch ConfVar [Dependency] a) where
+  codec = object "CondBranch" $
+      CondBranch
+        <$> requiredField' "condBranchCondition" .= condBranchCondition
+        <*> requiredField' "condBranchIfTrue" .= condBranchIfTrue
+        <*> optionalField' "condBranchIfFalse" .= condBranchIfFalse
+
+instance HasCodec (Condition ConfVar) where
+  codec = named "Condition" $
+      dimapCodec f g $
+        eitherCodec (object "var" $ requiredField' "v") $
+          eitherCodec (object "lit" $ requiredField' "bool") $
+            eitherCodec (object "cnot" $ requiredField' "cond") $
+              eitherCodec (object "cor" $ (,) <$> requiredField' "cond1" .= fst <*> requiredField' "cond2" .= snd) $
+                object "cand" $ (,) <$> requiredField' "cond12" .= fst <*> requiredField' "cond22" .= snd
+    where
+      f = \case
+        Left c -> Var c
+        Right (Left b) -> Lit b
+        Right (Right (Left cond)) -> CNot cond
+        Right (Right (Right (Left (cond1, cond2)))) -> COr cond1 cond2
+        Right (Right (Right (Right (cond1, cond2)))) -> CAnd cond1 cond2
+      g = \case
+        Var c -> Left c
+        Lit b -> Right $ Left b
+        CNot cond -> Right $ Right $ Left cond
+        COr cond1 cond2 -> Right $ Right $ Right $ Left (cond1, cond2)
+        CAnd cond1 cond2 -> Right $ Right $ Right $ Right (cond1, cond2)
+
+instance HasCodec ConfVar where
+  codec = object "ConfVar" $
+      dimapCodec f g $
+        eitherCodec (requiredField' "os") $
+          eitherCodec (requiredField' "arch") $
+            eitherCodec (requiredField' "flag") $
+              (,) <$> requiredField' "compiler" .= fst <*> requiredField' "version" .= snd
+    where
+      f = \case
+        Left o -> OS o
+        Right (Left a) -> Arch a
+        Right (Right (Left name)) -> Flag name
+        Right (Right(Right(compiler, version))) -> Impl compiler version
+      g = \case
+        OS o -> Left o
+        Arch a -> Right $ Left a
+        Flag name -> Right $ Right $ Left name
+        Impl compiler version -> Right $ Right $ Right (compiler, version)
+
+instance HasCodec Arch where
+  -- TODO add OtherArch
+  codec = stringConstCodec
+    [ (I386, "I386")
+    , (X86_64, "X86_64")
+    , (PPC, "PPC")
+    , (PPC64, "PPC64")
+    , (Sparc, "Sparc")
+    , (Arm, "Arm")
+    , (AArch64, "AArch64")
+    , (Mips, "Mips")
+    , (SH, "SH")
+    , (IA64, "IA64")
+    , (S390, "S390")
+    , (Alpha, "Alpha")
+    , (Hppa, "Hppa")
+    , (Rs6000, "Rs6000")
+    , (M68k, "M68k")
+    , (Vax, "Vax")
+    , (JavaScript, "JavaScript")
+    ]
+
+instance HasCodec OS where
+  -- TODO add OtherOS
+  codec = stringConstCodec
+    [ (Linux, "Linux")
+    , (Windows, "Windows")
+    , (OSX, "OSX")
+    , (FreeBSD, "FreeBSD")
+    , (OpenBSD, "OpenBSD")
+    , (NetBSD, "NetBSD")
+    , (DragonFly, "DragonFly")
+    , (Solaris, "Solaris")
+    , (AIX, "AIX")
+    , (HPUX, "HPUX")
+    , (IRIX, "IRIX")
+    , (HaLVM, "HaLVM")
+    , (Hurd, "Hurd")
+    , (IOS, "IOS")
+    , (Android, "Android")
+    , (Ghcjs, "Ghcjs")
+    ]
 
 instance HasCodec Library where
   codec =

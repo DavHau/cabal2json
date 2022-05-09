@@ -83,7 +83,6 @@ spec = do
   schemaSpec @Cabal.UnqualComponentName "unqual-component-name"
   schemaSpec @Cabal.Version "version"
   schemaSpec @Cabal.VersionRange "version-range"
-  schemaSpec @Cabal.VersionRange "version-range"
   schemaSpec @SPDX.License "spdx-license"
   schemaSpec @SPDX.LicenseExpression "spdx-license-expression"
   schemaSpec @SPDX.SimpleLicenseExpression "spdx-simple-license-expression"
