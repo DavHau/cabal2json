@@ -43,6 +43,7 @@ tests:
     dependencies:
     - Cabal
     - autodocodec
+    - utf8-string
     - autodocodec-yaml
     - cabal2json
     - sydtest
