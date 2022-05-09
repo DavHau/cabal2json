@@ -20,6 +20,7 @@
       buildInputs = with pkgs; [
         ghcid
         stack
+        haskell-language-server
       ];
     });
   };
