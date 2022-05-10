@@ -21,52 +21,34 @@ import Data.Hashable
 import Data.List.NonEmpty (fromList)
 import Data.Text (pack)
 import Data.Text.Encoding
-import Distribution.Compat.Lens (_1)
 import Distribution.Compiler as Cabal
 import Distribution.License as Cabal
 import Distribution.ModuleName as Cabal
 import Distribution.PackageDescription
 import Distribution.PackageDescription.Parsec as Cabal
-import Distribution.Parsec (CabalParsing (parsecHaskellString), Parsec (parsec), eitherParsec)
+import Distribution.Parsec (eitherParsec)
 import Distribution.Pretty as Pretty
 import Distribution.SPDX (LicenseExpression (..), SimpleLicenseExpression (..))
 import qualified Distribution.SPDX as SPDX
 import Distribution.SPDX.License as SPDX
-import Distribution.Types.Benchmark as Cabal
-import Distribution.Types.BenchmarkInterface as Cabal
-import Distribution.Types.BenchmarkType as Cabal
-import Distribution.Types.BuildInfo as Cabal
-import Distribution.Types.BuildType as Cabal
+import Distribution.System
 import Distribution.Types.CondTree as Cabal
-import Distribution.Types.ConfVar as Cabal
 import Distribution.Types.Dependency as Cabal
 import Distribution.Types.ExeDependency as Cabal
-import Distribution.Types.Executable as Cabal
 import Distribution.Types.ExecutableScope as Cabal
-import Distribution.Types.Flag as Cabal
 import Distribution.Types.ForeignLib as Cabal
 import Distribution.Types.ForeignLibOption as Cabal
 import Distribution.Types.ForeignLibType as Cabal
-import Distribution.Types.GenericPackageDescription as Cabal
 import Distribution.Types.IncludeRenaming as Cabal
 import Distribution.Types.LegacyExeDependency as Cabal
-import Distribution.Types.Library as Cabal
-import Distribution.Types.LibraryName as Cabal
 import Distribution.Types.LibraryVisibility as Cabal
 import Distribution.Types.Mixin as Cabal
-import Distribution.Types.ModuleReexport as Cabal
-import Distribution.Types.ModuleRenaming as Cabal
-import Distribution.Types.PackageDescription as Cabal
 import Distribution.Types.PackageId as Cabal
 import Distribution.Types.PackageName as Cabal
 import Distribution.Types.PkgconfigDependency as Cabal
 import Distribution.Types.PkgconfigName
 import Distribution.Types.PkgconfigVersion
 import Distribution.Types.PkgconfigVersionRange
-import Distribution.Types.SetupBuildInfo as Cabal
-import Distribution.Types.SourceRepo as Cabal
-import Distribution.Types.TestSuite as Cabal
-import Distribution.Types.TestSuiteInterface as Cabal
 import Distribution.Types.UnqualComponentName as Cabal
 import Distribution.Types.Version as Cabal
 import Distribution.Types.VersionRange as Cabal
@@ -74,15 +56,11 @@ import Distribution.Utils.ShortText as Cabal
 import Distribution.Verbosity as Cabal
 import Language.Haskell.Extension
 import System.Environment
-import Text.PrettyPrint
-import Text.Show.Pretty (pPrint)
-import Distribution.System
-import Distribution.Types.Condition
 
 cabal2JSON :: IO ()
 cabal2JSON = do
-  arg <- getArgs
-  case arg of
+  args <- getArgs
+  case args of
     [] -> error "Please provide path to cabal file as CLI argument"
     arg -> do
       genericPackageDescription <- Cabal.readGenericPackageDescription Cabal.deafening (head arg)
@@ -129,11 +107,11 @@ instance Hashable UnqualComponentName where
   hashWithSalt s = hashWithSalt s . unUnqualComponentName
 
 instance HasCodec VersionRange where
-  codec = dimapCodec f g codec
+  codec = bimapCodec f g codec
     where
       f = \s -> case eitherParsec s of
-        Left pe -> error "Invalid version string"
-        Right a -> a
+        Left pe -> Left $ show pe
+        Right a -> Right a
       g = prettyShow
 
 instance HasCodec CompilerFlavor where
@@ -303,10 +281,10 @@ instance HasCodec SPDX.License where
     where
       f = \case
         Left _ -> NONE
-        Right exp -> License exp
+        Right e -> License e
       g = \case
-        NONE -> Left "None"
-        License exp -> Right exp
+        NONE -> Left ("None" :: String)
+        License e -> Right e
 
 instance HasCodec SPDX.LicenseExpression where
   codec =
@@ -317,11 +295,11 @@ instance HasCodec SPDX.LicenseExpression where
             object "EOr" $ (,) <$> requiredField' "expression-11" .= fst <*> requiredField' "expression-22" .= snd
     where
       f = \case
-        Left (exp, exc) -> ELicense exp exc
+        Left (e, c) -> ELicense e c
         Right (Left (exp1, exp2)) -> EAnd exp1 exp2
         Right (Right (exp1, exp2)) -> EOr exp1 exp2
       g = \case
-        ELicense exp exc -> Left (exp, exc)
+        ELicense e c -> Left (e, c)
         EAnd exp1 exp2 -> Right $ Left (exp1, exp2)
         EOr exp1 exp2 -> Right $ Right (exp1, exp2)
 
@@ -334,12 +312,12 @@ instance HasCodec SPDX.SimpleLicenseExpression where
             requiredField' "license-ref"
     where
       f = \case
-        Left id -> ELicenseId id
-        Right (Left id) -> ELicenseIdPlus id
+        Left i -> ELicenseId i
+        Right (Left i) -> ELicenseIdPlus i
         Right (Right ref) -> ELicenseRef ref
       g = \case
-        ELicenseId id -> Left id
-        ELicenseIdPlus id -> Right $ Left id
+        ELicenseId i -> Left i
+        ELicenseIdPlus i -> Right $ Left i
         ELicenseRef ref -> Right $ Right ref
 
 instance HasCodec SPDX.LicenseId where
@@ -378,21 +356,25 @@ instance HasCodec FlagName where
   codec = dimapCodec mkFlagName unFlagName codec
 
 instance HasCodec a => HasCodec (CondTree ConfVar [Dependency] a) where
-  codec = named "ConditionalTree" $ object "CondTree" $
-      CondNode
-        <$> requiredField' "condTreeData" .= condTreeData
-        <*> requiredField' "condTreeConstraints" .= condTreeConstraints
-        <*> requiredField' "condTreeComponents" .= condTreeComponents
+  codec =
+    named "ConditionalTree" $
+      object "CondTree" $
+        CondNode
+          <$> requiredField' "condTreeData" .= condTreeData
+          <*> requiredField' "condTreeConstraints" .= condTreeConstraints
+          <*> requiredField' "condTreeComponents" .= condTreeComponents
 
 instance (HasCodec a) => HasCodec (CondBranch ConfVar [Dependency] a) where
-  codec = object "CondBranch" $
+  codec =
+    object "CondBranch" $
       CondBranch
         <$> requiredField' "condBranchCondition" .= condBranchCondition
         <*> requiredField' "condBranchIfTrue" .= condBranchIfTrue
         <*> optionalField' "condBranchIfFalse" .= condBranchIfFalse
 
 instance HasCodec (Condition ConfVar) where
-  codec = named "Condition" $
+  codec =
+    named "Condition" $
       dimapCodec f g $
         eitherCodec (object "var" $ requiredField' "v") $
           eitherCodec (object "lit" $ requiredField' "bool") $
@@ -414,7 +396,8 @@ instance HasCodec (Condition ConfVar) where
         CAnd cond1 cond2 -> Right $ Right $ Right $ Right (cond1, cond2)
 
 instance HasCodec ConfVar where
-  codec = object "ConfVar" $
+  codec =
+    object "ConfVar" $
       dimapCodec f g $
         eitherCodec (requiredField' "os") $
           eitherCodec (requiredField' "arch") $
@@ -425,7 +408,7 @@ instance HasCodec ConfVar where
         Left o -> OS o
         Right (Left a) -> Arch a
         Right (Right (Left name)) -> Flag name
-        Right (Right(Right(compiler, version))) -> Impl compiler version
+        Right (Right (Right (compiler, version))) -> Impl compiler version
       g = \case
         OS o -> Left o
         Arch a -> Right $ Left a
@@ -434,46 +417,48 @@ instance HasCodec ConfVar where
 
 instance HasCodec Arch where
   -- TODO add OtherArch
-  codec = stringConstCodec
-    [ (I386, "I386")
-    , (X86_64, "X86_64")
-    , (PPC, "PPC")
-    , (PPC64, "PPC64")
-    , (Sparc, "Sparc")
-    , (Arm, "Arm")
-    , (AArch64, "AArch64")
-    , (Mips, "Mips")
-    , (SH, "SH")
-    , (IA64, "IA64")
-    , (S390, "S390")
-    , (Alpha, "Alpha")
-    , (Hppa, "Hppa")
-    , (Rs6000, "Rs6000")
-    , (M68k, "M68k")
-    , (Vax, "Vax")
-    , (JavaScript, "JavaScript")
-    ]
+  codec =
+    stringConstCodec
+      [ (I386, "I386"),
+        (X86_64, "X86_64"),
+        (PPC, "PPC"),
+        (PPC64, "PPC64"),
+        (Sparc, "Sparc"),
+        (Arm, "Arm"),
+        (AArch64, "AArch64"),
+        (Mips, "Mips"),
+        (SH, "SH"),
+        (IA64, "IA64"),
+        (S390, "S390"),
+        (Alpha, "Alpha"),
+        (Hppa, "Hppa"),
+        (Rs6000, "Rs6000"),
+        (M68k, "M68k"),
+        (Vax, "Vax"),
+        (JavaScript, "JavaScript")
+      ]
 
 instance HasCodec OS where
   -- TODO add OtherOS
-  codec = stringConstCodec
-    [ (Linux, "Linux")
-    , (Windows, "Windows")
-    , (OSX, "OSX")
-    , (FreeBSD, "FreeBSD")
-    , (OpenBSD, "OpenBSD")
-    , (NetBSD, "NetBSD")
-    , (DragonFly, "DragonFly")
-    , (Solaris, "Solaris")
-    , (AIX, "AIX")
-    , (HPUX, "HPUX")
-    , (IRIX, "IRIX")
-    , (HaLVM, "HaLVM")
-    , (Hurd, "Hurd")
-    , (IOS, "IOS")
-    , (Android, "Android")
-    , (Ghcjs, "Ghcjs")
-    ]
+  codec =
+    stringConstCodec
+      [ (Linux, "Linux"),
+        (Windows, "Windows"),
+        (OSX, "OSX"),
+        (FreeBSD, "FreeBSD"),
+        (OpenBSD, "OpenBSD"),
+        (NetBSD, "NetBSD"),
+        (DragonFly, "DragonFly"),
+        (Solaris, "Solaris"),
+        (AIX, "AIX"),
+        (HPUX, "HPUX"),
+        (IRIX, "IRIX"),
+        (HaLVM, "HaLVM"),
+        (Hurd, "Hurd"),
+        (IOS, "IOS"),
+        (Android, "Android"),
+        (Ghcjs, "Ghcjs")
+      ]
 
 instance HasCodec Library where
   codec =
@@ -691,11 +676,11 @@ instance HasCodec PkgconfigName where
   codec = dimapCodec mkPkgconfigName unPkgconfigName codec
 
 instance HasCodec PkgconfigVersionRange where
-  codec = dimapCodec f g codec
+  codec = bimapCodec f g codec
     where
       f = \s -> case eitherParsec s of
-        Left pe -> error "Invalid version string"
-        Right a -> a
+        Left pe -> Left $ show pe
+        Right a -> Right a
       g = prettyShow
 
 instance HasCodec PkgconfigVersion where

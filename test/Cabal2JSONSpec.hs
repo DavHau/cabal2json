@@ -34,7 +34,6 @@ import Distribution.Types.SourceRepo as Cabal
 import Distribution.Types.TestSuite as Cabal
 import Distribution.Types.TestSuiteInterface as Cabal
 import Distribution.Types.UnqualComponentName as Cabal
-import Distribution.Types.Version
 import Distribution.Types.VersionRange as Cabal
 import Distribution.Utils.ShortText as Cabal
 import Distribution.Verbosity as Cabal
