@@ -18,8 +18,8 @@ import qualified Data.ByteString.Char8 as SB8
 import qualified Data.ByteString.Lazy as LB
 import qualified Data.HashMap.Strict as HM
 import Data.Hashable
-import Data.List.NonEmpty (fromList)
-import Data.Text (pack)
+import qualified Data.List.NonEmpty as NE
+import qualified Data.Text as T
 import Data.Text.Encoding
 import Distribution.Compiler as Cabal
 import Distribution.License as Cabal
@@ -534,7 +534,12 @@ instance HasCodec Executable where
         <*> requiredField' "build-info" .= buildInfo
 
 instance HasCodec ExecutableScope where
-  codec = stringConstCodec $ fromList [(ExecutablePublic, "public"), (ExecutablePrivate, "private")]
+  codec =
+    stringConstCodec $
+      NE.fromList
+        [ (ExecutablePublic, "public"),
+          (ExecutablePrivate, "private")
+        ]
 
 instance HasCodec TestSuite where
   codec =
@@ -688,7 +693,7 @@ instance HasCodec PkgconfigVersion where
     bimapCodec
       (Right . PkgconfigVersion . encodeUtf8)
       ( \(PkgconfigVersion v) -> case decodeUtf8' v of
-          Left ex -> pack $ show ex
+          Left ex -> T.pack $ show ex
           Right txt -> txt
       )
       codec
