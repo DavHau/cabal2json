@@ -1,3 +1,4 @@
+[36mdef: SPDX.LicenseId[m
 # [32many of[m
 [ NullBSD
 , AAL

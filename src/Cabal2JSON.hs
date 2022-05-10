@@ -260,24 +260,26 @@ instance HasCodec ShortText where
 instance HasCodec Cabal.License where
   -- TODO add others
   codec =
-    stringConstCodec
-      [ (BSD2, "BSD2"),
-        (BSD3, "BSD3"),
-        (BSD4, "BSD4"),
-        (MIT, "MIT"),
-        (ISC, "ISC"),
-        (PublicDomain, "PublicDomain"),
-        (AllRightsReserved, "AllRightsReserved"),
-        (UnspecifiedLicense, "UnspecifiedLicense"),
-        (OtherLicense, "OtherLicense")
-      ]
+    named "Cabal.License" $
+      stringConstCodec
+        [ (BSD2, "BSD2"),
+          (BSD3, "BSD3"),
+          (BSD4, "BSD4"),
+          (MIT, "MIT"),
+          (ISC, "ISC"),
+          (PublicDomain, "PublicDomain"),
+          (AllRightsReserved, "AllRightsReserved"),
+          (UnspecifiedLicense, "UnspecifiedLicense"),
+          (OtherLicense, "OtherLicense")
+        ]
 
 instance HasCodec SPDX.License where
   codec =
-    object "spdx-license" $
-      dimapCodec f g $
-        eitherCodec (pure NONE) $
-          requiredField' "license-expression"
+    named "SPDX.License" $
+      object "spdx-license" $
+        dimapCodec f g $
+          eitherCodec (pure NONE) $
+            requiredField' "license-expression"
     where
       f = \case
         Left _ -> NONE
@@ -321,7 +323,7 @@ instance HasCodec SPDX.SimpleLicenseExpression where
         ELicenseRef ref -> Right $ Right ref
 
 instance HasCodec SPDX.LicenseId where
-  codec = shownBoundedEnumCodec
+  codec = named "SPDX.LicenseId" shownBoundedEnumCodec
 
 instance HasCodec SPDX.LicenseRef where
   codec = dimapCodec f g codec
@@ -717,12 +719,13 @@ instance HasCodec Language where
 
 instance HasCodec Extension where
   codec =
-    object "Extension" $
-      dimapCodec f g $
-        eitherCodec (requiredField' "enable-extension") $
-          eitherCodec
-            (requiredField' "disable-extension")
-            (requiredField' "unknown-extension")
+    named "Extension" $
+      object "Extension" $
+        dimapCodec f g $
+          eitherCodec (requiredField' "enable-extension") $
+            eitherCodec
+              (requiredField' "disable-extension")
+              (requiredField' "unknown-extension")
     where
       f = \case
         Left e -> EnableExtension e
@@ -734,7 +737,7 @@ instance HasCodec Extension where
         UnknownExtension e -> Right $ Right e
 
 instance HasCodec KnownExtension where
-  codec = shownBoundedEnumCodec
+  codec = named "KnownExtension" shownBoundedEnumCodec
 
 instance HasCodec BuildInfo where
   codec =
