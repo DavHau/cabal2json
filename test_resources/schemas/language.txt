@@ -1,7 +1,5 @@
-# Language
 # [32many of[m
-[ <object>
-, <object>
-, [37mname[m: # [31mrequired[m
-    [33m<string>[m
+[ Haskell98
+, Haskell2010
+, [33m<string>[m
 ]

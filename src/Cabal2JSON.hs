@@ -695,18 +695,19 @@ instance HasCodec PkgconfigVersion where
 
 instance HasCodec Language where
   codec =
-    object "Language" $
-      dimapCodec f g $
-        eitherCodec (pure Haskell98) $
-          eitherCodec (pure Haskell2010) (requiredField' "name")
+    dimapCodec f g $
+      eitherCodec (literalTextValueCodec Haskell98 "Haskell98") $
+        eitherCodec
+          (literalTextValueCodec Haskell2010 "Haskell2010")
+          codec
     where
       f = \case
-        Left _ -> Haskell98
-        Right (Left _) -> Haskell2010
+        Left l -> l
+        Right (Left l) -> l
         Right (Right s) -> UnknownLanguage s
       g = \case
-        Haskell98 -> Left ()
-        Haskell2010 -> Right $ Left ()
+        Haskell98 -> Left Haskell98
+        Haskell2010 -> Right $ Left Haskell2010
         UnknownLanguage s -> Right $ Right s
 
 instance HasCodec Extension where

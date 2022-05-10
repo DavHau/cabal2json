@@ -142,7 +142,7 @@
                 "pkgconfigDepends": [],
                 "otherExtensions": [],
                 "extraLibDirs": [],
-                "defaultLanguage": {},
+                "defaultLanguage": "Haskell2010",
                 "customFieldsBI": []
             },
             "re-exported-modules": []
@@ -306,7 +306,7 @@
                     "pkgconfigDepends": [],
                     "otherExtensions": [],
                     "extraLibDirs": [],
-                    "defaultLanguage": {},
+                    "defaultLanguage": "Haskell2010",
                     "customFieldsBI": []
                 }
             },
@@ -470,7 +470,7 @@
                     "pkgconfigDepends": [],
                     "otherExtensions": [],
                     "extraLibDirs": [],
-                    "defaultLanguage": {},
+                    "defaultLanguage": "Haskell2010",
                     "customFieldsBI": []
                 }
             },

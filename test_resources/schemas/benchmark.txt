@@ -79,21 +79,17 @@
   [37mautogenModules[m: # [31mrequired[m
     - - [33m<string>[m
   [37mdefaultLanguage[m: # [31mrequired[m
-    # [32mor null[m
-    # Language
     # [32many of[m
-    [ <object>
-    , <object>
-    , [37mname[m: # [31mrequired[m
-        [33m<string>[m
+    [ [33mnull[m
+    , Haskell98
+    , Haskell2010
+    , [33m<string>[m
     ]
   [37motherLanguages[m: # [31mrequired[m
-    - # Language
-      # [32many of[m
-      [ <object>
-      , <object>
-      , [37mname[m: # [31mrequired[m
-          [33m<string>[m
+    - # [32many of[m
+      [ Haskell98
+      , Haskell2010
+      , [33m<string>[m
       ]
   [37mdefaultExtensions[m: # [31mrequired[m
     - # Extension
