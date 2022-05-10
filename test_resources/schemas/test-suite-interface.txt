@@ -1,0 +1,23 @@
+# TestSuiteInterface
+# [32many of[m
+[ [37mversion[m: # [31mrequired[m
+    - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+  [37mfilepath[m: # [31mrequired[m
+    [33m<string>[m
+, [37mversion[m: # [31mrequired[m
+    - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+  [37mmodule-name[m: # [31mrequired[m
+    - [33m<string>[m
+, [37mtype[m: # [31mrequired[m
+    # TestType
+    # [32many of[m
+    [ [37mversion[m: # [31mrequired[m
+        - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+    , [37mversion[m: # [31mrequired[m
+        - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+    , [37mname[m: # [31mrequired[m
+        [33m<string>[m
+      [37mversion[m: # [31mrequired[m
+        - [33m<number>[m # between [32m-9223372036854775808[m and [32m9223372036854775807[m
+    ]
+]

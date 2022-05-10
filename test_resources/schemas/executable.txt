@@ -1,0 +1,986 @@
+# Executable
+[37mname[m: # [31mrequired[m
+  [33m<string>[m
+[37mmodule-path[m: # [31mrequired[m
+  [33m<string>[m
+[37mscope[m: # [31mrequired[m
+  # [32many of[m
+  [ public
+  , private
+  ]
+[37mbuild-info[m: # [31mrequired[m
+  # BuildInfo
+  [37mbuildable[m: # [31mrequired[m
+    [33m<boolean>[m
+  [37mbuildTools[m: # [31mrequired[m
+    - # LegacyExeDependency
+      [37mpackage-name[m: # [31mrequired[m
+        [33m<string>[m
+      [37minclude-renaming[m: # [31mrequired[m
+        [33m<string>[m
+  [37mbuildToolDepends[m: # [31mrequired[m
+    - # ExeDependency
+      [37mpackage-name[m: # [31mrequired[m
+        [33m<string>[m
+      [37mexecutable-component-name[m: # [31mrequired[m
+        [33m<string>[m
+      [37mversion-range[m: # [31mrequired[m
+        [33m<string>[m
+  [37mcppOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37masmOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mcmmOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mccOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mcxxOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mldOptions[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mpkgconfigDepends[m: # [31mrequired[m
+    - # PkgconfigDependency
+      [37mpkgconfigName[m: # [31mrequired[m
+        [33m<string>[m
+      [37mpkgconfigVersionRange[m: # [31mrequired[m
+        [33m<string>[m
+  [37mframeworks[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraFrameworkDirs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37masmSources[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mcmmSources[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mcSources[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mcxxSources[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mjsSources[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mhsSourceDirs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37motherModules[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mvirtualModules[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mautogenModules[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mdefaultLanguage[m: # [31mrequired[m
+    # [32mor null[m
+    # Language
+    # [32many of[m
+    [ <object>
+    , <object>
+    , [37mname[m: # [31mrequired[m
+        [33m<string>[m
+    ]
+  [37motherLanguages[m: # [31mrequired[m
+    - # Language
+      # [32many of[m
+      [ <object>
+      , <object>
+      , [37mname[m: # [31mrequired[m
+          [33m<string>[m
+      ]
+  [37mdefaultExtensions[m: # [31mrequired[m
+    - # Extension
+      # [32many of[m
+      [ [37menable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37mdisable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37munknown-extension[m: # [31mrequired[m
+          [33m<string>[m
+      ]
+  [37motherExtensions[m: # [31mrequired[m
+    - # Extension
+      # [32many of[m
+      [ [37menable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37mdisable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37munknown-extension[m: # [31mrequired[m
+          [33m<string>[m
+      ]
+  [37moldExtensions[m: # [31mrequired[m
+    - # Extension
+      # [32many of[m
+      [ [37menable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37mdisable-extension[m: # [31mrequired[m
+          # [32many of[m
+          [ OverlappingInstances
+          , UndecidableInstances
+          , IncoherentInstances
+          , DoRec
+          , RecursiveDo
+          , ParallelListComp
+          , MultiParamTypeClasses
+          , MonomorphismRestriction
+          , FunctionalDependencies
+          , Rank2Types
+          , RankNTypes
+          , PolymorphicComponents
+          , ExistentialQuantification
+          , ScopedTypeVariables
+          , PatternSignatures
+          , ImplicitParams
+          , FlexibleContexts
+          , FlexibleInstances
+          , EmptyDataDecls
+          , CPP
+          , KindSignatures
+          , BangPatterns
+          , TypeSynonymInstances
+          , TemplateHaskell
+          , ForeignFunctionInterface
+          , Arrows
+          , Generics
+          , ImplicitPrelude
+          , NamedFieldPuns
+          , PatternGuards
+          , GeneralizedNewtypeDeriving
+          , GeneralisedNewtypeDeriving
+          , ExtensibleRecords
+          , RestrictedTypeSynonyms
+          , HereDocuments
+          , MagicHash
+          , TypeFamilies
+          , StandaloneDeriving
+          , UnicodeSyntax
+          , UnliftedFFITypes
+          , InterruptibleFFI
+          , CApiFFI
+          , LiberalTypeSynonyms
+          , TypeOperators
+          , RecordWildCards
+          , RecordPuns
+          , DisambiguateRecordFields
+          , TraditionalRecordSyntax
+          , OverloadedStrings
+          , GADTs
+          , GADTSyntax
+          , MonoPatBinds
+          , RelaxedPolyRec
+          , ExtendedDefaultRules
+          , UnboxedTuples
+          , DeriveDataTypeable
+          , DeriveGeneric
+          , DefaultSignatures
+          , InstanceSigs
+          , ConstrainedClassMethods
+          , PackageImports
+          , ImpredicativeTypes
+          , NewQualifiedOperators
+          , PostfixOperators
+          , QuasiQuotes
+          , TransformListComp
+          , MonadComprehensions
+          , ViewPatterns
+          , XmlSyntax
+          , RegularPatterns
+          , TupleSections
+          , GHCForeignImportPrim
+          , NPlusKPatterns
+          , DoAndIfThenElse
+          , MultiWayIf
+          , LambdaCase
+          , RebindableSyntax
+          , ExplicitForAll
+          , DatatypeContexts
+          , MonoLocalBinds
+          , DeriveFunctor
+          , DeriveTraversable
+          , DeriveFoldable
+          , NondecreasingIndentation
+          , SafeImports
+          , Safe
+          , Trustworthy
+          , Unsafe
+          , ConstraintKinds
+          , PolyKinds
+          , DataKinds
+          , ParallelArrays
+          , RoleAnnotations
+          , OverloadedLists
+          , EmptyCase
+          , AutoDeriveTypeable
+          , NegativeLiterals
+          , BinaryLiterals
+          , NumDecimals
+          , NullaryTypeClasses
+          , ExplicitNamespaces
+          , AllowAmbiguousTypes
+          , JavaScriptFFI
+          , PatternSynonyms
+          , PartialTypeSignatures
+          , NamedWildCards
+          , DeriveAnyClass
+          , DeriveLift
+          , StaticPointers
+          , StrictData
+          , Strict
+          , ApplicativeDo
+          , DuplicateRecordFields
+          , TypeApplications
+          , TypeInType
+          , UndecidableSuperClasses
+          , MonadFailDesugaring
+          , TemplateHaskellQuotes
+          , OverloadedLabels
+          , TypeFamilyDependencies
+          , DerivingStrategies
+          , DerivingVia
+          , UnboxedSums
+          , HexFloatLiterals
+          , BlockArguments
+          , NumericUnderscores
+          , QuantifiedConstraints
+          , StarIsType
+          , EmptyDataDeriving
+          , CUSKs
+          , ImportQualifiedPost
+          , StandaloneKindSignatures
+          , UnliftedNewtypes
+          ]
+      , [37munknown-extension[m: # [31mrequired[m
+          [33m<string>[m
+      ]
+  [37mextraLibs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraGHCiLibs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraBundledLibs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraLibFlavours[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraDynLibFlavours[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mextraLibDirs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mincludeDirs[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mincludes[m: # [31mrequired[m
+    - [33m<string>[m
+  [37mautogenIncludes[m: # [31mrequired[m
+    - [33m<string>[m
+  [37minstallIncludes[m: # [31mrequired[m
+    - [33m<string>[m
+  [37moptions[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mprofOptions[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37msharedOptions[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mstaticOptions[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mcustomFieldsBI[m: # [31mrequired[m
+    - - [33m<string>[m
+  [37mtargetBuildDepends[m: # [31mrequired[m
+    - # Dependency
+      [37mpackage-name[m: # [31mrequired[m
+        [33m<string>[m
+      [37mversion-range[m: # [31mrequired[m
+        [33m<string>[m
+      [37mlibrary[m: # [31mrequired[m
+        - # LibraryName
+          # [32many of[m
+          [ <object>
+          , [37msub-lib-name[m: # [31mrequired[m
+              [33m<string>[m
+          ]
+  [37mmixins[m: # [31mrequired[m
+    - # Mixin
+      [37mpackage-name[m: # [31mrequired[m
+        [33m<string>[m
+      [37minclude-renaming[m: # [31mrequired[m
+        # IncludeRenaming
+        [37mincludeProvidesRn[m: # [31mrequired[m
+          # ModuleRenaming
+          # [32many of[m
+          [ <object>
+          , [37mname[m: # [31mrequired[m
+              - - - [33m<string>[m
+          , [37mname[m: # [31mrequired[m
+              - - [33m<string>[m
+          ]
+        [37mincludeRequiresRn[m: # [31mrequired[m
+          # ModuleRenaming
+          # [32many of[m
+          [ <object>
+          , [37mname[m: # [31mrequired[m
+              - - - [33m<string>[m
+          , [37mname[m: # [31mrequired[m
+              - - [33m<string>[m
+          ]

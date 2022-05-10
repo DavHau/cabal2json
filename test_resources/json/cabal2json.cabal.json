@@ -1,0 +1,594 @@
+{
+    "library": {
+        "condTreeComponents": [],
+        "condTreeData": {
+            "exposed": true,
+            "visibility": "LibraryVisibilityPublic",
+            "exposed-modules": [
+                [
+                    "Cabal2JSON"
+                ]
+            ],
+            "name": {},
+            "signatures": [],
+            "build-info": {
+                "buildable": true,
+                "asmOptions": [],
+                "extraFrameworkDirs": [],
+                "targetBuildDepends": [
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "Cabal",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "aeson",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "autodocodec",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "base",
+                        "version-range": ">=4.7 && <5"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "bytestring",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "hashable",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "pretty",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "pretty-show",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "text",
+                        "version-range": "-any"
+                    },
+                    {
+                        "library": [
+                            {}
+                        ],
+                        "package-name": "unordered-containers",
+                        "version-range": "-any"
+                    }
+                ],
+                "buildTools": [],
+                "otherLanguages": [],
+                "oldExtensions": [],
+                "cmmSources": [],
+                "otherModules": [
+                    [
+                        "Paths_cabal2json"
+                    ]
+                ],
+                "mixins": [],
+                "ldOptions": [],
+                "ccOptions": [],
+                "includeDirs": [],
+                "extraDynLibFlavours": [],
+                "cmmOptions": [],
+                "extraGHCiLibs": [],
+                "extraLibs": [],
+                "installIncludes": [],
+                "extraBundledLibs": [],
+                "asmSources": [],
+                "sharedOptions": [
+                    [],
+                    []
+                ],
+                "defaultExtensions": [],
+                "autogenIncludes": [],
+                "frameworks": [],
+                "includes": [],
+                "jsSources": [],
+                "hsSourceDirs": [
+                    "src"
+                ],
+                "autogenModules": [],
+                "cxxSources": [],
+                "cSources": [],
+                "virtualModules": [],
+                "options": [
+                    [],
+                    []
+                ],
+                "staticOptions": [
+                    [],
+                    []
+                ],
+                "cppOptions": [],
+                "extraLibFlavours": [],
+                "buildToolDepends": [],
+                "profOptions": [
+                    [],
+                    []
+                ],
+                "cxxOptions": [],
+                "pkgconfigDepends": [],
+                "otherExtensions": [],
+                "extraLibDirs": [],
+                "defaultLanguage": {},
+                "customFieldsBI": []
+            },
+            "re-exported-modules": []
+        },
+        "condTreeConstraints": [
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "Cabal",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "aeson",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "autodocodec",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "base",
+                "version-range": ">=4.7 && <5"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "bytestring",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "hashable",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "pretty",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "pretty-show",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "text",
+                "version-range": "-any"
+            },
+            {
+                "library": [
+                    {}
+                ],
+                "package-name": "unordered-containers",
+                "version-range": "-any"
+            }
+        ]
+    },
+    "executables": {
+        "cabal2json": {
+            "condTreeComponents": [],
+            "condTreeData": {
+                "name": "cabal2json",
+                "scope": "public",
+                "module-path": "Main.hs",
+                "build-info": {
+                    "buildable": true,
+                    "asmOptions": [],
+                    "extraFrameworkDirs": [],
+                    "targetBuildDepends": [
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "base",
+                            "version-range": ">=4.7 && <5"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "cabal2json",
+                            "version-range": "-any"
+                        }
+                    ],
+                    "buildTools": [],
+                    "otherLanguages": [],
+                    "oldExtensions": [],
+                    "cmmSources": [],
+                    "otherModules": [
+                        [
+                            "Paths_cabal2json"
+                        ]
+                    ],
+                    "mixins": [],
+                    "ldOptions": [],
+                    "ccOptions": [],
+                    "includeDirs": [],
+                    "extraDynLibFlavours": [],
+                    "cmmOptions": [],
+                    "extraGHCiLibs": [],
+                    "extraLibs": [],
+                    "installIncludes": [],
+                    "extraBundledLibs": [],
+                    "asmSources": [],
+                    "sharedOptions": [
+                        [],
+                        []
+                    ],
+                    "defaultExtensions": [],
+                    "autogenIncludes": [],
+                    "frameworks": [],
+                    "includes": [],
+                    "jsSources": [],
+                    "hsSourceDirs": [
+                        "app"
+                    ],
+                    "autogenModules": [],
+                    "cxxSources": [],
+                    "cSources": [],
+                    "virtualModules": [],
+                    "options": [
+                        [
+                            "-threaded",
+                            "-rtsopts",
+                            "-with-rtsopts=-N"
+                        ],
+                        []
+                    ],
+                    "staticOptions": [
+                        [],
+                        []
+                    ],
+                    "cppOptions": [],
+                    "extraLibFlavours": [],
+                    "buildToolDepends": [],
+                    "profOptions": [
+                        [],
+                        []
+                    ],
+                    "cxxOptions": [],
+                    "pkgconfigDepends": [],
+                    "otherExtensions": [],
+                    "extraLibDirs": [],
+                    "defaultLanguage": {},
+                    "customFieldsBI": []
+                }
+            },
+            "condTreeConstraints": [
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "base",
+                    "version-range": ">=4.7 && <5"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "cabal2json",
+                    "version-range": "-any"
+                }
+            ]
+        }
+    },
+    "test-suites": {
+        "cabal2json-test": {
+            "condTreeComponents": [],
+            "condTreeData": {
+                "name": "",
+                "interface": {
+                    "filepath": "Spec.hs",
+                    "version": [
+                        1,
+                        0
+                    ]
+                },
+                "build-info": {
+                    "buildable": true,
+                    "asmOptions": [],
+                    "extraFrameworkDirs": [],
+                    "targetBuildDepends": [
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "Cabal",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "autodocodec",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "autodocodec-yaml",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "base",
+                            "version-range": ">=4.7 && <5"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "cabal2json",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "sydtest",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "sydtest-aeson",
+                            "version-range": "-any"
+                        },
+                        {
+                            "library": [
+                                {}
+                            ],
+                            "package-name": "utf8-string",
+                            "version-range": "-any"
+                        }
+                    ],
+                    "buildTools": [],
+                    "otherLanguages": [],
+                    "oldExtensions": [],
+                    "cmmSources": [],
+                    "otherModules": [
+                        [
+                            "Cabal2JSONSpec"
+                        ],
+                        [
+                            "Paths_cabal2json"
+                        ]
+                    ],
+                    "mixins": [],
+                    "ldOptions": [],
+                    "ccOptions": [],
+                    "includeDirs": [],
+                    "extraDynLibFlavours": [],
+                    "cmmOptions": [],
+                    "extraGHCiLibs": [],
+                    "extraLibs": [],
+                    "installIncludes": [],
+                    "extraBundledLibs": [],
+                    "asmSources": [],
+                    "sharedOptions": [
+                        [],
+                        []
+                    ],
+                    "defaultExtensions": [],
+                    "autogenIncludes": [],
+                    "frameworks": [],
+                    "includes": [],
+                    "jsSources": [],
+                    "hsSourceDirs": [
+                        "test"
+                    ],
+                    "autogenModules": [],
+                    "cxxSources": [],
+                    "cSources": [],
+                    "virtualModules": [],
+                    "options": [
+                        [
+                            "-threaded",
+                            "-rtsopts",
+                            "-with-rtsopts=-N"
+                        ],
+                        []
+                    ],
+                    "staticOptions": [
+                        [],
+                        []
+                    ],
+                    "cppOptions": [],
+                    "extraLibFlavours": [],
+                    "buildToolDepends": [
+                        {
+                            "executable-component-name": "sydtest-discover",
+                            "package-name": "sydtest-discover",
+                            "version-range": "-any"
+                        }
+                    ],
+                    "profOptions": [
+                        [],
+                        []
+                    ],
+                    "cxxOptions": [],
+                    "pkgconfigDepends": [],
+                    "otherExtensions": [],
+                    "extraLibDirs": [],
+                    "defaultLanguage": {},
+                    "customFieldsBI": []
+                }
+            },
+            "condTreeConstraints": [
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "Cabal",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "autodocodec",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "autodocodec-yaml",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "base",
+                    "version-range": ">=4.7 && <5"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "cabal2json",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "sydtest",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "sydtest-aeson",
+                    "version-range": "-any"
+                },
+                {
+                    "library": [
+                        {}
+                    ],
+                    "package-name": "utf8-string",
+                    "version-range": "-any"
+                }
+            ]
+        }
+    },
+    "description": {
+        "homepage": "https://github.com/NorfairKing/cabal2json#readme",
+        "library": null,
+        "custom-fields": [],
+        "pkg-url": "",
+        "copyright": "Copyright (c) 2022 Tom Sydney Kerckhove",
+        "data-files": [],
+        "category": "",
+        "bug-reports": "https://github.com/NorfairKing/cabal2json/issues",
+        "source-repos": [
+            {
+                "tag": null,
+                "location": "https://github.com/NorfairKing/cabal2json",
+                "kind": {},
+                "subdir": null,
+                "branch": null,
+                "module": null,
+                "type": "Git"
+            }
+        ],
+        "extra-tmp-files": [],
+        "maintainer": "syd@cs-syd.eu",
+        "benchmarks": [],
+        "foreign-libs": [],
+        "extra-doc-files": [],
+        "extra-source-files": [],
+        "spec-version": {
+            "Left": [
+                1,
+                12
+            ]
+        },
+        "synopsis": "",
+        "package": {
+            "name": "cabal2json",
+            "version": [
+                0,
+                0,
+                0,
+                0
+            ]
+        },
+        "build-type-raw": "Simple",
+        "data-dir": ".",
+        "stability": "",
+        "sublibraries": [],
+        "author": "Tom Sydney Kerckhove",
+        "tested-with": [],
+        "license": {
+            "Left": {}
+        },
+        "license-files": [],
+        "executables": [],
+        "test-suites": [],
+        "description": "",
+        "custom-setup": null
+    }
+}

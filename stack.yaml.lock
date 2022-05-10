@@ -5,43 +5,43 @@
 
 packages:
 - completed:
-    hackage: autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
     pantry-tree:
-      size: 688
       sha256: eda5beece10b7f90f40bc9f8b43e50fbb9e4cacd2b4aa51b85c2c530a32b0bab
+      size: 688
+    hackage: autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
   original:
     hackage: autodocodec-0.0.1.0@sha256:fab19b4019ab3b43ce656435c33bc5cd83ec997b28ed39a3e80982a2e056a616,1547
 - completed:
-    hackage: autodocodec-schema-0.1.0.0@sha256:e62052ca88d6bae51af058ad120b5c5d0510145f603dbb70616865a8de1ce238,1089
     pantry-tree:
-      size: 235
       sha256: 08c03850f28b7566304455c8f7445cdbaa2268ac609c1beb85241f41ce058dd8
+      size: 235
+    hackage: autodocodec-schema-0.1.0.0@sha256:e62052ca88d6bae51af058ad120b5c5d0510145f603dbb70616865a8de1ce238,1089
   original:
     hackage: autodocodec-schema-0.1.0.0@sha256:e62052ca88d6bae51af058ad120b5c5d0510145f603dbb70616865a8de1ce238,1089
 - completed:
-    hackage: autodocodec-yaml-0.1.0.0@sha256:c9c87b0dcc5f192bec7b722013d6652895b6b1d6a9d4b342958f20be66a31d47,1191
     pantry-tree:
-      size: 439
       sha256: 7ab0cf51b3455b3727cdee07dee26547cd06df3eba5455c0fbee93ea5161bb78
+      size: 439
+    hackage: autodocodec-yaml-0.1.0.0@sha256:c9c87b0dcc5f192bec7b722013d6652895b6b1d6a9d4b342958f20be66a31d47,1191
   original:
     hackage: autodocodec-yaml-0.1.0.0@sha256:c9c87b0dcc5f192bec7b722013d6652895b6b1d6a9d4b342958f20be66a31d47,1191
 - completed:
-    hackage: sydtest-0.8.0.0@sha256:71ce53ce5bbcc2511b584969e7711a38c734d3ab0de82d070bc85c07d5fa81da,3704
     pantry-tree:
-      size: 3079
       sha256: 8bf25aa261226c4dbfce5cdc531df56d43a7b397dcd733ab9ea24b5da40aaba7
+      size: 3079
+    hackage: sydtest-0.8.0.0@sha256:71ce53ce5bbcc2511b584969e7711a38c734d3ab0de82d070bc85c07d5fa81da,3704
   original:
     hackage: sydtest-0.8.0.0
 - completed:
-    hackage: sydtest-aeson-0.0.0.0@sha256:d2fbd9b0b4dc52b4a54d9b479a800a4d6a5046ca178d2114015be957114acb6f,1472
     pantry-tree:
-      size: 294
       sha256: d1db28afbb1b3d1172f61c10c95fe5106f67f58a38c4f913247465f510af9b95
+      size: 294
+    hackage: sydtest-aeson-0.0.0.0@sha256:d2fbd9b0b4dc52b4a54d9b479a800a4d6a5046ca178d2114015be957114acb6f,1472
   original:
     hackage: sydtest-aeson-0.0.0.0
 snapshots:
 - completed:
+    sha256: cdead65fca0323144b346c94286186f4969bf85594d649c49c7557295675d8a5
     size: 586286
     url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/16.yaml
-    sha256: cdead65fca0323144b346c94286186f4969bf85594d649c49c7557295675d8a5
   original: lts-18.16

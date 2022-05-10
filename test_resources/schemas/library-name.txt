@@ -1,0 +1,6 @@
+# LibraryName
+# [32many of[m
+[ <object>
+, [37msub-lib-name[m: # [31mrequired[m
+    [33m<string>[m
+]

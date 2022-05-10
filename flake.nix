@@ -18,8 +18,9 @@
   in {
     devShell = forAllSystems (system: pkgs: pkgs.mkShell {
       buildInputs = with pkgs; [
-        stack
         ghcid
+        stack
+        haskell-language-server
       ];
     });
   };

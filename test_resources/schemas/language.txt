@@ -1,0 +1,7 @@
+# Language
+# [32many of[m
+[ <object>
+, <object>
+, [37mname[m: # [31mrequired[m
+    [33m<string>[m
+]
