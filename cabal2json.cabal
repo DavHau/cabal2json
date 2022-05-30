@@ -6,11 +6,13 @@ cabal-version: 1.12
 
 name:           cabal2json
 version:        0.0.0.0
+synopsis:       Turn a .cabal file into a .json file
 homepage:       https://github.com/NorfairKing/cabal2json#readme
 bug-reports:    https://github.com/NorfairKing/cabal2json/issues
 author:         Tom Sydney Kerckhove
 maintainer:     syd@cs-syd.eu
 copyright:      Copyright (c) 2022 Tom Sydney Kerckhove
+license:        MIT
 build-type:     Simple
 
 source-repository head

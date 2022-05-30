@@ -566,7 +566,7 @@
                 12
             ]
         },
-        "synopsis": "",
+        "synopsis": "Turn a .cabal file into a .json file",
         "package": {
             "name": "cabal2json",
             "version": [
@@ -583,7 +583,7 @@
         "author": "Tom Sydney Kerckhove",
         "tested-with": [],
         "license": {
-            "Left": {}
+            "Right": "MIT"
         },
         "license-files": [],
         "executables": [],

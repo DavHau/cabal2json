@@ -1,9 +1,11 @@
-name:                cabal2json
-version:             0.0.0.0
-github:              "NorfairKing/cabal2json"
-author:              "Tom Sydney Kerckhove"
-maintainer:          "syd@cs-syd.eu"
-copyright:           "Copyright (c) 2022 Tom Sydney Kerckhove"
+name: cabal2json
+version: 0.0.0.0
+github: "NorfairKing/cabal2json"
+author: "Tom Sydney Kerckhove"
+maintainer: "syd@cs-syd.eu"
+copyright: "Copyright (c) 2022 Tom Sydney Kerckhove"
+license: MIT
+synopsis: Turn a .cabal file into a .json file
 
 dependencies:
 - base >= 4.7 && < 5
