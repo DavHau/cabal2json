@@ -40,9 +40,32 @@
 
     packages = forAllSystems (system: pkgs: pkgsHaskell: {
 
-      cabal2json-nixpkgs = pkgs.haskell.packages.ghc922.callPackage ./nix/cabal2json.nix {};
-
       cabal2json =
+        let
+          haskellPackages = pkgs.haskell.packages.ghc8107.override {
+            overrides = curr: prev: {
+              autodocodec = prev.autodocodec.overrideAttrs (old: {
+                meta = old.meta // {broken = false;};
+              });
+              validity-aeson = prev.validity-aeson.overrideAttrs (old: {
+                meta = old.meta // {broken = false;};
+              });
+              validity = prev.validity.overrideAttrs (old: {
+                patches = [];
+              });
+            };
+          };
+          cabal2json' = haskellPackages.callPackage ./nix/cabal2json.nix {};
+          cabal2json'' = cabal2json'.override {
+            Cabal = haskellPackages.Cabal_3_2_1_0;
+          };
+          cabal2json = cabal2json''.overrideAttrs (old: {
+            doCheck = false;
+          });
+        in
+          cabal2json;
+
+      cabal2json-haskell-nix =
         let
           flake = (pkgsHaskell.haskell-nix.project' {
             src = builtins.path {
