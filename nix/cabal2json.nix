@@ -6,7 +6,7 @@
 mkDerivation {
   pname = "cabal2json";
   version = "0.0.0.0";
-  src = ./.;
+  src = ../.;
   isLibrary = true;
   isExecutable = true;
   libraryHaskellDepends = [
