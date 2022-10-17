@@ -378,11 +378,11 @@ instance HasCodec (Condition ConfVar) where
   codec =
     named "Condition" $
       dimapCodec f g $
-        eitherCodec (object "var" $ requiredField' "v") $
+        eitherCodec (object "var" $ requiredField' "variable") $
           eitherCodec (object "lit" $ requiredField' "bool") $
-            eitherCodec (object "cnot" $ requiredField' "cond") $
-              eitherCodec (object "cor" $ (,) <$> requiredField' "cond1" .= fst <*> requiredField' "cond2" .= snd) $
-                object "cand" $ (,) <$> requiredField' "cond12" .= fst <*> requiredField' "cond22" .= snd
+            eitherCodec (object "not" $ requiredField' "cond_not") $
+              eitherCodec (object "or" $ (,) <$> requiredField' "cond_or_1" .= fst <*> requiredField' "cond_or_2" .= snd) $
+                object "and" $ (,) <$> requiredField' "cond_and_1" .= fst <*> requiredField' "cond_and_2" .= snd
     where
       f = \case
         Left c -> Var c

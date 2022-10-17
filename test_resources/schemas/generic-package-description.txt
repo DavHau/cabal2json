@@ -1941,7 +1941,7 @@
         [36mdef: Condition[m
         # [32many of[m
         [ # var
-          [37mv[m: # [31mrequired[m
+          [37mvariable[m: # [31mrequired[m
             # ConfVar
             # [32many of[m
             [ [37mos[m: # [31mrequired[m
@@ -2004,18 +2004,18 @@
         , # lit
           [37mbool[m: # [31mrequired[m
             [33m<boolean>[m
-        , # cnot
-          [37mcond[m: # [31mrequired[m
+        , # not
+          [37mcond_not[m: # [31mrequired[m
             [36mref: Condition[m
-        , # cor
-          [37mcond1[m: # [31mrequired[m
+        , # or
+          [37mcond_or_1[m: # [31mrequired[m
             [36mref: Condition[m
-          [37mcond2[m: # [31mrequired[m
+          [37mcond_or_2[m: # [31mrequired[m
             [36mref: Condition[m
-        , # cand
-          [37mcond12[m: # [31mrequired[m
+        , # and
+          [37mcond_and_1[m: # [31mrequired[m
             [36mref: Condition[m
-          [37mcond22[m: # [31mrequired[m
+          [37mcond_and_2[m: # [31mrequired[m
             [36mref: Condition[m
         ]
       [37mcondBranchIfTrue[m: # [31mrequired[m
