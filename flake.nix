@@ -38,7 +38,14 @@
       ];
     });
 
-    packages = forAllSystems (system: pkgs: pkgsHaskell: {
+    packages = forAllSystems (system: pkgs: pkgsHaskell:
+      let
+        src = builtins.path {
+          path = ./.;
+          name = "src";
+          filter = path: _: ! l.elem (l.baseNameOf path) ["flake.nix" "flake.lock"];
+        };
+      in {
 
       cabal2json =
         let
@@ -61,6 +68,7 @@
           };
           cabal2json = cabal2json''.overrideAttrs (old: {
             doCheck = false;
+            inherit src;
           });
         in
           cabal2json;
@@ -68,11 +76,7 @@
       cabal2json-haskell-nix =
         let
           flake = (pkgsHaskell.haskell-nix.project' {
-            src = builtins.path {
-              path = ./.;
-              name = "src";
-              filter = path: _: ! l.elem (l.baseNameOf path) ["flake.nix" "flake.lock"];
-            };
+            inherit src;
           }).flake {};
         in
           flake.packages."cabal2json:exe:cabal2json";
